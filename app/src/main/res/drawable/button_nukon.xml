@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    >
+    <corners android:radius="10dp" />
+    <gradient
+        android:angle="270"
+        android:centerX="41%"
+        android:centerColor="@color/nukon_light_blue"
+        android:startColor="@color/nukon_blue"
+        android:endColor="@color/nukon_blue"
+        android:type="linear" />
+    <padding
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="0dp" />
+    <size
+        android:width="270dp"
+        android:height="60dp" />
+    <stroke
+        android:width="2dp"
+        android:color="@color/nukon_blue" />
+
+</shape>
+
+

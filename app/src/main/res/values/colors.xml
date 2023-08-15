@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+
+    <color name="nukon_blue">#26265B</color>
+    <color name="nukon_light_blue">#30305C</color>
+
+</resources>
+
