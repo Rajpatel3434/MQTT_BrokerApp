@@ -192,7 +192,6 @@
         android:id="@+id/ipTv"
         android:layout_width="139dp"
         android:layout_height="20dp"
-        android:text="172.16.0.202"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.299"
@@ -243,7 +242,7 @@
         android:layout_width="410dp"
         android:layout_height="127dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="361dp"></LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
