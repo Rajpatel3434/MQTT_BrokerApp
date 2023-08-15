@@ -114,7 +114,6 @@ public class MainActivity2 extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 })
-
                 .show();
     }
 

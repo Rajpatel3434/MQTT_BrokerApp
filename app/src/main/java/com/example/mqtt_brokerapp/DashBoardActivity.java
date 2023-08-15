@@ -80,7 +80,6 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
-
         //on pressing start button shows server is started
         startbrokerbtn = findViewById(R.id.brokerStartBtn);
         startbrokerbtn.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +102,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
             }
         });
-
 
         //on pressing Authentication radio button opens up Textview with username and password
         rbAuth = findViewById(R.id.AuthRadioBtn);
@@ -133,8 +131,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
         this.refreshButtons();
-
-
 
     }
 
