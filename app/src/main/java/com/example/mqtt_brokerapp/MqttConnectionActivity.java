@@ -26,7 +26,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-public class SubScribeActivity extends AppCompatActivity {
+
+public class MqttConnectionActivity extends AppCompatActivity {
 
 
     private static final String TAG = "MyTag";
@@ -43,9 +44,9 @@ public class SubScribeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sub_scribe);
         init();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
+            startForegroundService(new Intent(MqttConnection.this, MyBackgroundService.class));
         } else {
-            startService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
+            startService(new Intent(MqttConnection.this, MyBackgroundService.class));
         }
     }
 
@@ -56,12 +57,7 @@ public class SubScribeActivity extends AppCompatActivity {
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                tvStatus.setText("connect...");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
-                } else {
-                    startService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
-                }
+                tvStatus.setText("connect...");
                 connectX();
             }
         });
@@ -132,7 +128,6 @@ public class SubScribeActivity extends AppCompatActivity {
                 public void onSuccess(IMqttToken asyncActionToken) {
 
                     Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
-
                     Toast.makeText(SubScribeActivity.this, "connect onSuccess", Toast.LENGTH_SHORT).show();
                     tvStatus.setText("connect onSuccess");
                 }
