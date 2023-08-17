@@ -84,7 +84,7 @@
         android:layout_height="56dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/button_nukon"
-        android:text="Connect"
+        android:text="Messages"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

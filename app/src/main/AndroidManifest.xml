@@ -42,7 +42,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SubScribeActivity"
+            android:name=".MqttConnectionActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity2"

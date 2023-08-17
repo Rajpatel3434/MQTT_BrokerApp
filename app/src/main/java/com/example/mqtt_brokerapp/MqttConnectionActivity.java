@@ -4,17 +4,19 @@ import static android.system.Os.connect;
 import static kotlinx.coroutines.flow.FlowKt.subscribe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +28,12 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 public class MqttConnectionActivity extends AppCompatActivity {
 
 
     private static final String TAG = "MyTag";
-    private Button btnConnect, btnPublish, btnSubscribe;
+    private Button btnPublish, btnSubscribe;
+    private Switch switchConnect;
     private MqttAndroidClient mqttAndroidClient;
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
@@ -43,24 +45,28 @@ public class MqttConnectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_scribe);
         init();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(MqttConnection.this, MyBackgroundService.class));
-        } else {
-            startService(new Intent(MqttConnection.this, MyBackgroundService.class));
-        }
+
     }
 
     private void init(){
-        btnConnect = findViewById(R.id.btn_connect);
 
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(),serverURL,clientId);
-        btnConnect.setOnClickListener(new View.OnClickListener() {
+
+        switchConnect = findViewById(R.id.btn_connect);
+//        switchConnect.setChecked(false);
+
+        switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                tvStatus.setText("connect...");
-                connectX();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    tvStatus.setText("Connecting...");
+                    connectX();
+                } else {
+                    disconnectX();
+                }
             }
         });
+
 
         btnSubscribe = findViewById(R.id.btn_subscribe);
 
@@ -122,21 +128,46 @@ public class MqttConnectionActivity extends AppCompatActivity {
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
 
+
         try {
             mqttAndroidClient.connect(connectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
 
                     Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
-                    Toast.makeText(SubScribeActivity.this, "connect onSuccess", Toast.LENGTH_SHORT).show();
-                    tvStatus.setText("connect onSuccess");
+                    Toast.makeText(MqttConnectionActivity.this, "connect onSuccess", Toast.LENGTH_SHORT).show();
+                    tvStatus.setText("Connection Sucessful!");
+                    switchConnect.setChecked(true);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
-                    tvStatus.setText("connect onFailure");
+                    tvStatus.setText("Connection Failed!");
                     Log.e(TAG, "connect onFailure: " );
+                    switchConnect.setChecked(false);
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void disconnectX(){
+        try {
+            IMqttToken disconToken = mqttAndroidClient.disconnect();
+            disconToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    switchConnect.setActivated(true);
+                    tvStatus.setText("Connection Unsuccessful!");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken,
+                                      Throwable exception) {
+
                 }
             });
         } catch (MqttException e) {
@@ -151,13 +182,13 @@ public class MqttConnectionActivity extends AppCompatActivity {
                     public void onSuccess(IMqttToken asyncActionToken) {
 
                         Log.e(TAG, "onSuccess: " + asyncActionToken.getClient().getClientId());
-                        tvStatus.setText("subscribe onSuccess");
+                        tvStatus.setText("Subscription Successful!");
                     }
 
                     @Override
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
-                        tvStatus.setText("subscribe onFailure:");
+                        tvStatus.setText("Subscription Failed!");
                     }
                 });
             } catch (MqttException e) {
@@ -176,12 +207,12 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
 
-                    tvStatus.setText("publish onSuccess");
+                    tvStatus.setText("Message Published!");
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    tvStatus.setText("publish onFailure");
+                    tvStatus.setText("Message Failed!");
                     Log.e(TAG, "onFailure: ");
 
                 }

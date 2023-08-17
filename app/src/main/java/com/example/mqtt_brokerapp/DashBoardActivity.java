@@ -123,7 +123,7 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(DashBoardActivity.this, SubScribeActivity.class);
+                Intent intent = new Intent(DashBoardActivity.this, MqttConnectionActivity.class);
                 startActivity(intent);
             }
         });
