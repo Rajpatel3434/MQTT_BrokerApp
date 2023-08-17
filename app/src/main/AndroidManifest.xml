@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,6 +21,7 @@
         android:theme="@style/Theme.MQTT_BrokerApp"
         tools:targetApi="33">
 
+
         <service
             android:name=".MyBackgroundService"
             android:enabled="true"
@@ -30,6 +32,8 @@
                 <action android:name="android.intent.action.SEND" />
             </intent-filter>
         </service>
+        <service android:name="org.eclipse.paho.android.service.MqttService" >
+        </service>
 
         <activity
             android:name=".DashBoardActivity"
@@ -38,10 +42,14 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".SubScribeActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity2"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MQTT_BrokerApp">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

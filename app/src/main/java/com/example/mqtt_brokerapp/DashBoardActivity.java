@@ -1,6 +1,7 @@
 package com.example.mqtt_brokerapp;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,10 +25,22 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
 public class DashBoardActivity extends AppCompatActivity {
-    private Button stopbrokerbtn, startbrokerbtn;
+    private Button stopbrokerbtn, startbrokerbtn, subbtn;
     private TextView tView1, tView2, ipadd, ipaddtv, authTextview;
     private RadioButton rbAuth, rbNoAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +55,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_dash_board);
+
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -103,6 +118,17 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
+        subbtn = findViewById(R.id.subBtn);
+        subbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, SubScribeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
         //on pressing Authentication radio button opens up Textview with username and password
         rbAuth = findViewById(R.id.AuthRadioBtn);
         rbNoAuth = findViewById(R.id.noAuthRadioBtn);
@@ -155,9 +181,4 @@ public class DashBoardActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
 }
