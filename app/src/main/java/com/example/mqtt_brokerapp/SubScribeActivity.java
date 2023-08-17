@@ -5,6 +5,8 @@ import static kotlinx.coroutines.flow.FlowKt.subscribe;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,22 +35,33 @@ public class SubScribeActivity extends AppCompatActivity {
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
     String topic = "mqttHQ-client-test";
+    String serverURL = "tcp://public.mqtthq.com:1883";
+    String clientId = "xyz";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_scribe);
         init();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
+        } else {
+            startService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
+        }
     }
 
     private void init(){
         btnConnect = findViewById(R.id.btn_connect);
-        String serverURL = "tcp://public.mqtthq.com:1883";
-        String clientId = "xyz";
+
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(),serverURL,clientId);
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                tvStatus.setText("connect...");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
+                } else {
+                    startService(new Intent(SubScribeActivity.this, MyBackgroundService.class));
+                }
                 connectX();
             }
         });
@@ -63,67 +76,123 @@ public class SubScribeActivity extends AppCompatActivity {
             }
         });
 
+
+
         tvMsg = findViewById(R.id.tv_msg);
         tvStatus = findViewById(R.id.text);
 
         inputMsg = findViewById(R.id.edt_input);
 
+        btnPublish = findViewById(R.id.btn_publish);
+        btnPublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                publish();
+            }
+        });
     }
 
-    //订阅
+    private String messages = null;
 
-
-    //连接
     private void connectX() {
 
-        try {
-            IMqttToken token = mqttAndroidClient.connect();
+        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), serverURL, clientId);
 
-            token.setActionCallback(new IMqttActionListener() {
+        mqttAndroidClient.setCallback(new MqttCallback() {
+            @Override
+            public void connectionLost(Throwable cause) {
+                Log.e(TAG, "connectionLost: ");
+            }
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+
+                String time = System.currentTimeMillis() +"";
+
+                Log.e(TAG, "messageArrived: " + topic + ":" + message.toString());
+
+                String msg = "time: " + time + "\r\n" + "topic: " + topic + "\r\n" + "message: " + message.toString();
+                messages = messages == null? msg : messages + "\n" + msg;
+
+                tvMsg.setText( messages );
+            }
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+                Log.e(TAG, "deliveryComplete: ");
+            }
+        });
+
+
+        MqttConnectOptions connectOptions = new MqttConnectOptions();
+        connectOptions.setAutomaticReconnect(true);
+
+        try {
+            mqttAndroidClient.connect(connectOptions, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+
+                    Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
+
                     Toast.makeText(SubScribeActivity.this, "connect onSuccess", Toast.LENGTH_SHORT).show();
                     tvStatus.setText("connect onSuccess");
-//                    Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
-                    subscribe();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
-//                        tvStatus.setText("connect onFailure");
-                    Log.e(TAG, "connect onFailure: ");
+                    tvStatus.setText("connect onFailure");
+                    Log.e(TAG, "connect onFailure: " );
                 }
             });
         } catch (MqttException e) {
+            e.printStackTrace();
         }
-
     }
 
-
         private void subscribe() {
+            try {
+                mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+
+                        Log.e(TAG, "onSuccess: " + asyncActionToken.getClient().getClientId());
+                        tvStatus.setText("subscribe onSuccess");
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
+                        tvStatus.setText("subscribe onFailure:");
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+    }
+
+    private void publish() {
+        MqttMessage message = new MqttMessage();
+        message.setQos(0);
+        message.setRetained(false);
+        String msg = inputMsg.getText().toString();
+        message.setPayload((msg).getBytes());
         try {
-            mqttAndroidClient.subscribe(topic, 0);
-            mqttAndroidClient.setCallback(new MqttCallback() {
+            mqttAndroidClient.publish(topic, message, null, new IMqttActionListener() {
                 @Override
-                public void connectionLost(Throwable cause) {
+                public void onSuccess(IMqttToken asyncActionToken) {
 
+                    tvStatus.setText("publish onSuccess");
                 }
 
                 @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    Log.d(TAG, "topic: " + topic);
-                    Log.d(TAG, "message: "+ new String(message.getPayload()));
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken token) {
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    tvStatus.setText("publish onFailure");
+                    Log.e(TAG, "onFailure: ");
 
                 }
             });
-
-        }
-        catch (MqttException e) {
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
 
     }

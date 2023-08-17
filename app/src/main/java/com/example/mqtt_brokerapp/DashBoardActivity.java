@@ -122,6 +122,7 @@ public class DashBoardActivity extends AppCompatActivity {
         subbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(DashBoardActivity.this, SubScribeActivity.class);
                 startActivity(intent);
             }
