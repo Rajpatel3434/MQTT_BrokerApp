@@ -206,8 +206,9 @@ public class MqttConnectionActivity extends AppCompatActivity {
             mqttAndroidClient.publish(topic, message, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-
+                    Log.d(TAG,"published");
                     tvStatus.setText("Message Published!");
+                    tvMsg.setText( msg );
                 }
 
                 @Override
@@ -219,6 +220,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
             });
         } catch (MqttException e) {
             e.printStackTrace();
+            Log.e(TAG, "onFailure: "+e.getMessage());
         }
 
     }
