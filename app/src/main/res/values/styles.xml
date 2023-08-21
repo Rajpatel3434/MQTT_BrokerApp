@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name ="OptionsColor" parent = "ThemeOverlay.AppCompat.Light">
+    <style name ="OptionsColor" parent = "Theme.Material3.Light.NoActionBar">
         <item name="android:textSize"> 30dp </item>
         <item name="android:textColor"> @color/white </item>
-
     </style>
 
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <!-- Customize color of navigation drawer icon and back arrow -->
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 </resources>

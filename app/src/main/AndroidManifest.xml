@@ -37,13 +37,17 @@
 
         <activity
             android:name=".DashBoardActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/dashboard_activity_name"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".MqttConnectionActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/Mqtt_connection_name"
+            />
         <activity
             android:name=".MainActivity2"
             android:exported="true"

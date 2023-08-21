@@ -13,10 +13,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,13 +45,8 @@ public class MainActivity2 extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
-//
-//
-        myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
         button = findViewById(R.id.mainActivity2_startStop_button);
         button.setOnClickListener(new View.OnClickListener() {

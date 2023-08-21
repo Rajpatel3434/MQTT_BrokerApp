@@ -12,10 +12,12 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +42,27 @@ public class MqttConnectionActivity extends AppCompatActivity {
     String topic = "mqttHQ-client-test";
     String serverURL = "tcp://public.mqtthq.com:1883";
     String clientId = "xyz";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_scribe);
         init();
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
+
+//        ColorDrawable colorDrawable
+//                = new ColorDrawable(getResources().getColor(R.color.white));
+//
+//        // Set BackgroundDrawable
+//        myToolbar.setNavigationIcon(colorDrawable);
 
     }
 
@@ -221,6 +239,16 @@ public class MqttConnectionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

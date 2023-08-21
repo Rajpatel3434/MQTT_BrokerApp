@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
+import androidx.core.view.MenuCompat;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -64,11 +66,11 @@ public class DashBoardActivity extends AppCompatActivity {
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
-        ColorDrawable colorDrawable
-                = new ColorDrawable(getResources().getColor(R.color.white));
-
-        // Set BackgroundDrawable
-        myToolbar.setNavigationIcon(colorDrawable);
+//        ColorDrawable colorDrawable
+//                = new ColorDrawable(getResources().getColor(R.color.white));
+//
+//        // Set BackgroundDrawable
+//        myToolbar.setNavigationIcon(colorDrawable);
 
         //ip address when start button is pressed
         ipadd = (TextView) findViewById(R.id.startSignView);
@@ -172,6 +174,14 @@ public class DashBoardActivity extends AppCompatActivity {
         stopbrokerbtn.setEnabled( MyBackgroundService.isRunning() );
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     ///Back button in the toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,7 +189,13 @@ public class DashBoardActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if(id == R.id.action_settings){
+            Intent intent = new Intent( DashBoardActivity.this, MqttConnectionActivity.class);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

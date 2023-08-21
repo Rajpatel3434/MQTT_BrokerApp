@@ -2,14 +2,9 @@
     <!-- Base application theme. -->
 <!--    <style name="Base.Theme.MQTT_BrokerApp" parent="Theme.Material3.DayNight.NoActionBar">-->
 
-        <style name="Theme.MQTT_BrokerApp" parent="Base.Theme.MQTT_BrokerApp" >
-            <item name="colorPrimary">@color/nukon_blue</item>
-            <!--        <item name="colorPrimary">@android:color/nukon_blue</item>-->
-            <!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
-            <!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
-            <!--        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>-->
-        </style>
-        <!-- Customize your dark theme here. -->
-<!--         <item name="colorPrimary">@color/nukon_blue</item>-->
-<!--    </style>-->
+
+
+            <style name="Theme.MQTT_BrokerApp" parent="Theme.Material3.DayNight.NoActionBar" >
+                <item name="colorPrimary">@color/nukon_blue</item>
+            </style>
 </resources>
