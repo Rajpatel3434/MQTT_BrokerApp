@@ -70,20 +70,22 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="362dp"
-        android:layout_height="342dp"
+        android:layout_width="376dp"
+        android:layout_height="346dp"
+        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/black"
-        app:layout_constraintVertical_bias="0.958">
+        android:scrollbarFadeDuration="0"
+        app:layout_constraintVertical_bias="0.859">
 
         <TextView
             android:id="@+id/tv_msg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/green" />
     </ScrollView>
 
     <Switch
