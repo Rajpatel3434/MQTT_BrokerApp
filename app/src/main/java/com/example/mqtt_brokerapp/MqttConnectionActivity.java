@@ -48,7 +48,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub_scribe);
+        setContentView(R.layout.activity_mqttconnection);
         init();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -57,12 +57,6 @@ public class MqttConnectionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
-
-//        ColorDrawable colorDrawable
-//                = new ColorDrawable(getResources().getColor(R.color.white));
-//
-//        // Set BackgroundDrawable
-//        myToolbar.setNavigationIcon(colorDrawable);
 
     }
 
