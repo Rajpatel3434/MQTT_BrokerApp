@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.view.MenuCompat;
 
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.graphics.drawable.ColorDrawable;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +42,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class DashBoardActivity extends AppCompatActivity {
     private Button stopbrokerbtn, startbrokerbtn, subbtn;
-    private TextView tView1, tView2, ipadd, ipaddtv, authTextview;
+    private TextView tView1, tView2, ipadd, ipaddtv;
+    private EditText usernameTxt, passwordTxt;
+    private ConstraintLayout authCL;
     private RadioButton rbAuth, rbNoAuth;
 
 
@@ -65,12 +69,6 @@ public class DashBoardActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
-
-//        ColorDrawable colorDrawable
-//                = new ColorDrawable(getResources().getColor(R.color.white));
-//
-//        // Set BackgroundDrawable
-//        myToolbar.setNavigationIcon(colorDrawable);
 
         //ip address when start button is pressed
         ipadd = (TextView) findViewById(R.id.startSignView);
@@ -110,7 +108,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 }
                 startbrokerbtn.setEnabled(false);
                 stopbrokerbtn.setEnabled(true);
-
                 String display = "mqtt> Server is started... ";
                 tView1.setText(display);
                 ipadd.setText( "mqtt> IP: "+Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
@@ -137,14 +134,17 @@ public class DashBoardActivity extends AppCompatActivity {
         rbNoAuth = findViewById(R.id.noAuthRadioBtn);
 
 
-        authTextview = findViewById(R.id.authTv);
-        authTextview.setVisibility(View.GONE);
+        authCL = findViewById(R.id.authConstraintlayout);
+        authCL.setVisibility(View.GONE);
+
+
+
         rbAuth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (authTextview.getVisibility() == View.GONE){
-                    authTextview.setVisibility(View.VISIBLE);
+                if (authCL.getVisibility() == View.GONE){
+                    authCL.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -152,8 +152,8 @@ public class DashBoardActivity extends AppCompatActivity {
         rbNoAuth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (authTextview.getVisibility() == View.VISIBLE){
-                    authTextview.setVisibility(View.GONE);
+                if (authCL.getVisibility() == View.VISIBLE){
+                    authCL.setVisibility(View.GONE);
                 }
             }
         });
