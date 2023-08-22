@@ -61,7 +61,7 @@
         android:layout_marginTop="80dp"
         android:text="Publish"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.881"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,14 @@
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scrollbarFadeDuration="0"
+        android:fadeScrollbars="false"
+        android:scrollbarThumbVertical="@color/white"
+        android:scrollbarSize="8dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:paddingRight="7dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
         app:layout_constraintVertical_bias="0.859">
 
         <TextView
@@ -94,7 +101,7 @@
         android:layout_height="70dp"
         android:text="Connect"
         android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
