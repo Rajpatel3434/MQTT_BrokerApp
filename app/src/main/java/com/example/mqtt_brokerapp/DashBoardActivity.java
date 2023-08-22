@@ -1,6 +1,7 @@
 package com.example.mqtt_brokerapp;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -81,6 +83,9 @@ public class DashBoardActivity extends AppCompatActivity {
         tView1 = (TextView) findViewById(R.id.stoppedSignView);
         stopbrokerbtn = findViewById(R.id.brokerStopBtn);
 
+
+        subbtn = findViewById(R.id.subBtn);
+        subbtn.setEnabled(false);
         //on pressing stop button shows server is stopped
         stopbrokerbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +94,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 // finish();
                 startbrokerbtn.setEnabled(true);
                 stopbrokerbtn.setEnabled(false);
+                subbtn.setEnabled(false);
                 String display = "mqtt> Server is stopped...";
                 tView1.setText(display);
                 ipadd.setText("");
@@ -108,6 +114,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 }
                 startbrokerbtn.setEnabled(false);
                 stopbrokerbtn.setEnabled(true);
+                subbtn.setEnabled(true);
                 String display = "mqtt> Server is started... ";
                 tView1.setText(display);
                 ipadd.setText( "mqtt> IP: "+Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
@@ -117,7 +124,7 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
-        subbtn = findViewById(R.id.subBtn);
+
         subbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
