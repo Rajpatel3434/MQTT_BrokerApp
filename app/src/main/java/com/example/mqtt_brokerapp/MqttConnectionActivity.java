@@ -5,8 +5,11 @@ import static kotlinx.coroutines.flow.FlowKt.subscribe;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ComponentActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,7 +33,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-public class MqttConnectionActivity extends AppCompatActivity {
+public class MqttConnectionActivity extends AppCompatActivity{
 
 
     private static final String TAG = "MyTag";
@@ -40,10 +43,9 @@ public class MqttConnectionActivity extends AppCompatActivity {
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
     String topic = "mqttHQ-client-test";
-    String serverURL = "tcp://public.mqtthq.com:1883";
+    String serverURL = "tcp://broker.hivemq.com:1883";
     String clientId = "xyz";
-
-
+     String USERNAME, PASSWORD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,16 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(MqttConnectionActivity.this, MyBackgroundService.class));
+        } else {
+            startService(new Intent(MqttConnectionActivity.this, MyBackgroundService.class));
+        }
+
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
+        USERNAME= sp.getString("Username","");
+        PASSWORD= sp.getString("Password","");
+
     }
 
     private void init(){
@@ -65,13 +77,13 @@ public class MqttConnectionActivity extends AppCompatActivity {
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(),serverURL,clientId);
 
         switchConnect = findViewById(R.id.btn_connect);
-//        switchConnect.setChecked(false);
 
         switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     tvStatus.setText("Connecting...");
+
                     connectX();
                 } else {
                     disconnectX();
@@ -108,9 +120,13 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
     private String messages = null;
 
+
     private void connectX() {
 
-        mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), serverURL, clientId);
+        MqttConnectOptions connectOptions = new MqttConnectOptions();
+        connectOptions.setAutomaticReconnect(true);
+
+        mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
@@ -136,13 +152,15 @@ public class MqttConnectionActivity extends AppCompatActivity {
             }
         });
 
-
-        MqttConnectOptions connectOptions = new MqttConnectOptions();
-        connectOptions.setAutomaticReconnect(true);
-
-
         try {
-            mqttAndroidClient.connect(connectOptions, null, new IMqttActionListener() {
+
+            MqttConnectOptions options = new MqttConnectOptions();
+            options.setUserName(USERNAME);
+            options.setPassword(PASSWORD.toCharArray());
+
+            IMqttToken token = mqttAndroidClient.connect(options);
+
+            token.setActionCallback( new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
 

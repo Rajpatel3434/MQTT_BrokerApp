@@ -13,7 +13,9 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -45,11 +47,12 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class DashBoardActivity extends AppCompatActivity {
     private Button stopbrokerbtn, startbrokerbtn, subbtn;
     private TextView tView1, tView2, ipadd, ipaddtv;
-    private EditText usernameTxt, passwordTxt;
+     EditText usernameTxt, passwordTxt;
     private ConstraintLayout authCL;
     private RadioButton rbAuth, rbNoAuth;
+    String USERNAME, PASSWORD;
 
-
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +86,12 @@ public class DashBoardActivity extends AppCompatActivity {
         tView1 = (TextView) findViewById(R.id.stoppedSignView);
         stopbrokerbtn = findViewById(R.id.brokerStopBtn);
 
+
+        // Ask user for the username & password by getting their IDs
+        usernameTxt = findViewById(R.id.usernameTxt);
+        passwordTxt = findViewById(R.id.passwordText);
+        //Shared preferences where next activity can use the objects (username & password)
+        sp = getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
 
         subbtn = findViewById(R.id.subBtn);
         subbtn.setEnabled(false);
@@ -121,6 +130,12 @@ public class DashBoardActivity extends AppCompatActivity {
                 ipadd.setEnabled(true);
                 Toast.makeText(DashBoardActivity.this, "Server started...", Toast.LENGTH_SHORT).show();
 
+                USERNAME = usernameTxt.getText().toString();
+                PASSWORD = passwordTxt.getText().toString();
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("Username", USERNAME);
+                editor.putString("Password",PASSWORD);
+                editor.commit();
             }
         });
 
@@ -145,7 +160,6 @@ public class DashBoardActivity extends AppCompatActivity {
         authCL.setVisibility(View.GONE);
 
 
-
         rbAuth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +178,10 @@ public class DashBoardActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+
 
 
         this.refreshButtons();
