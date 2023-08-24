@@ -215,7 +215,7 @@ public class DashBoardActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if(id == R.id.action_settings){
-            Intent intent = new Intent( DashBoardActivity.this, MqttConnectionActivity.class);
+            Intent intent = new Intent( DashBoardActivity.this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }

@@ -126,7 +126,7 @@ public class MainActivity2 extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent( MainActivity2.this, DashBoardActivity.class);
+            Intent intent = new Intent( MainActivity2.this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }
