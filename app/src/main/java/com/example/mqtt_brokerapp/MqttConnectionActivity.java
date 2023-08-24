@@ -10,7 +10,7 @@ import androidx.core.app.ComponentActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -25,6 +25,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -33,10 +34,17 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.io.InputStream;
+
 public class MqttConnectionActivity extends AppCompatActivity{
 
 
     private static final String TAG = "MyTag";
+    private static InputStream caCrtFile;
+    private static InputStream crtFile;
+    private static InputStream keyFile;
+    private static String password;
     private Button btnPublish, btnSubscribe;
     private Switch switchConnect;
     private MqttAndroidClient mqttAndroidClient;
@@ -45,6 +53,7 @@ public class MqttConnectionActivity extends AppCompatActivity{
     String topic = "mqttHQ-client-test";
     String serverURL = "tcp://broker.hivemq.com:1883";
     String clientId = "xyz";
+
      String USERNAME, PASSWORD;
 
     @Override
@@ -126,6 +135,7 @@ public class MqttConnectionActivity extends AppCompatActivity{
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
 
+
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
         mqttAndroidClient.setCallback(new MqttCallback() {
@@ -183,6 +193,7 @@ public class MqttConnectionActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
+
 
     private void disconnectX(){
         try {
