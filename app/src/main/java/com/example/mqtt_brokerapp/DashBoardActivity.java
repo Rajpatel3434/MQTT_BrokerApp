@@ -21,6 +21,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Menu;
@@ -90,6 +91,8 @@ public class DashBoardActivity extends AppCompatActivity {
         // Ask user for the username & password by getting their IDs
         usernameTxt = findViewById(R.id.usernameTxt);
         passwordTxt = findViewById(R.id.passwordText);
+
+
         //Shared preferences where next activity can use the objects (username & password)
         sp = getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
 
@@ -130,12 +133,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 ipadd.setEnabled(true);
                 Toast.makeText(DashBoardActivity.this, "Server started...", Toast.LENGTH_SHORT).show();
 
-                USERNAME = usernameTxt.getText().toString();
-                PASSWORD = passwordTxt.getText().toString();
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("Username", USERNAME);
-                editor.putString("Password",PASSWORD);
-                editor.commit();
             }
         });
 
@@ -144,8 +141,19 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(DashBoardActivity.this, MqttConnectionActivity.class);
-                startActivity(intent);
+                if(TextUtils.isEmpty(USERNAME) && TextUtils.isEmpty(PASSWORD)){
+                    usernameTxt.setError("Field cannot be empty");
+                    passwordTxt.setError("Field cannot be empty");
+                    Intent intent = new Intent(DashBoardActivity.this, MqttConnectionActivity.class);
+                    startActivity(intent);
+                    return;
+
+                }
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("Username", USERNAME);
+                editor.putString("Password",PASSWORD);
+                editor.commit();
+
             }
         });
 
@@ -167,6 +175,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 if (authCL.getVisibility() == View.GONE){
                     authCL.setVisibility(View.VISIBLE);
                 }
+
             }
         });
 
@@ -178,11 +187,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
-
 
         this.refreshButtons();
 
