@@ -1,6 +1,7 @@
 package com.example.mqtt_brokerapp;
 
 import static android.system.Os.connect;
+import static org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory;
 import static kotlinx.coroutines.flow.FlowKt.subscribe;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,35 +27,71 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMDecryptorProvider;
+import org.bouncycastle.openssl.PEMEncryptedKeyPair;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
+import org.eclipse.paho.client.mqttv3.MqttSecurityException;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+
+;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyPair;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 
-public class MqttConnectionActivity extends AppCompatActivity{
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
+
+
+public class MqttConnectionActivity extends AppCompatActivity {
 
 
     private static final String TAG = "MyTag";
-    private static InputStream caCrtFile;
-    private static InputStream crtFile;
-    private static InputStream keyFile;
-    private static String password;
+
     private Button btnPublish, btnSubscribe;
     private Switch switchConnect;
     private MqttAndroidClient mqttAndroidClient;
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
     String topic = "mqttHQ-client-test";
-    String serverURL = "tcp://broker.hivemq.com:1883";
+    String serverURL = "ssl://broker.hivemq.com:8883";
+    //    String serverURL = "tcp://broker.hivemq.com:1883";
     String clientId = "xyz";
 
-     String USERNAME, PASSWORD;
+    String USERNAME, PASSWORD;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,21 +113,23 @@ public class MqttConnectionActivity extends AppCompatActivity{
         }
 
         SharedPreferences sp = getApplicationContext().getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
-        USERNAME= sp.getString("Username","");
-        PASSWORD= sp.getString("Password","");
+        USERNAME = sp.getString("Username", "");
+        PASSWORD = sp.getString("Password", "");
+
 
     }
 
-    private void init(){
 
-        mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(),serverURL,clientId);
+    private void init() {
+
+        mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
         switchConnect = findViewById(R.id.btn_connect);
 
         switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     tvStatus.setText("Connecting...");
 
                     connectX();
@@ -110,7 +149,6 @@ public class MqttConnectionActivity extends AppCompatActivity{
                 subscribe();
             }
         });
-
 
 
         tvMsg = findViewById(R.id.tv_msg);
@@ -135,7 +173,6 @@ public class MqttConnectionActivity extends AppCompatActivity{
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
 
-
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
         mqttAndroidClient.setCallback(new MqttCallback() {
@@ -143,18 +180,20 @@ public class MqttConnectionActivity extends AppCompatActivity{
             public void connectionLost(Throwable cause) {
                 Log.e(TAG, "connectionLost: ");
             }
+
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
 
-                String time = System.currentTimeMillis() +"";
+                String time = System.currentTimeMillis() + "";
 
                 Log.e(TAG, "messageArrived: " + topic + ":" + message.toString());
 
                 String msg = "time: " + time + "\r\n" + "topic: " + topic + "\r\n" + "message: " + message.toString();
-                messages = messages == null? msg : messages + "\n" + msg;
+                messages = messages == null ? msg : messages + "\n" + msg;
 
-                tvMsg.setText( messages );
+                tvMsg.setText(messages);
             }
+
             @Override
             public void deliveryComplete(IMqttDeliveryToken token) {
 
@@ -192,29 +231,77 @@ public class MqttConnectionActivity extends AppCompatActivity{
         } catch (MqttException e) {
             e.printStackTrace();
         }
-    }
 
-
-    private void disconnectX(){
         try {
-            IMqttToken disconToken = mqttAndroidClient.disconnect();
-            disconToken.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    switchConnect.setActivated(true);
-                    tvStatus.setText("Connection Unsuccessful!");
-                }
+            MemoryPersistence persistence = new MemoryPersistence();
+            MqttClient mqttClient = new MqttClient(serverURL, clientId, persistence);
 
-                @Override
-                public void onFailure(IMqttToken asyncActionToken,
-                                      Throwable exception) {
+            // Load CA certificate from raw resources
+            InputStream caInputStream = getResources().openRawResource(R.raw.ca);
+            CertificateFactory caCertFactory = CertificateFactory.getInstance("X.509");
+            X509Certificate caCert = (X509Certificate) caCertFactory.generateCertificate(caInputStream);
 
-                }
-            });
-        } catch (MqttException e) {
+            // Load client certificate from raw resources
+            InputStream clientCertInputStream = getResources().openRawResource(R.raw.clientpem);
+            CertificateFactory clientCertFactory = CertificateFactory.getInstance("X.509");
+            X509Certificate clientCert = (X509Certificate) clientCertFactory.generateCertificate(clientCertInputStream);
+
+            // Load client private key
+            InputStream keyInputStream = getResources().openRawResource(R.raw.clientkey);
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null, null);
+            keyStore.setCertificateEntry("ca", caCert);
+            keyStore.setCertificateEntry("client", clientCert);
+
+            // Set up SSL context with client key and certificate
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            keyManagerFactory.init(keyStore, null);
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
+
+            Toast.makeText(this, "Actually works!", Toast.LENGTH_SHORT).show();
+            // Configure MQTT connection options
+            MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+            mqttConnectOptions.setSocketFactory(sslContext.getSocketFactory());
+
+            mqttClient.connect(mqttConnectOptions);
+
+
+        } catch (
+                Exception e) {
             e.printStackTrace();
         }
+
+
+
     }
+
+
+
+
+    private void disconnectX () {
+            try {
+                IMqttToken disconToken = mqttAndroidClient.disconnect();
+                disconToken.setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        switchConnect.setActivated(true);
+                        tvStatus.setText("Connection Unsuccessful!");
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken,
+                                          Throwable exception) {
+
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
 
         private void subscribe() {
             try {
