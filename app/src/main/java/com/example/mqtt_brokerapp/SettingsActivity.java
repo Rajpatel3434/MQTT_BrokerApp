@@ -26,7 +26,6 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText editTextIP, editTextPort;
     private Button saveBtn;
 
-    private SharedPreferences sharedPreferences;
 
     private static final String PREFS_NAME = "MyPrefs";
 
@@ -35,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-
+        //Toolbar modification
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

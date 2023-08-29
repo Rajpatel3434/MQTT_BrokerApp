@@ -61,8 +61,10 @@ public class MqttConnectionActivity extends AppCompatActivity {
     //    String serverURL = "tcp://broker.hivemq.com:1883";
 
     AppConfig appConfig = AppConfig.getInstance();
-    String serverURL = appConfig.getIpAddress();
-    int port = appConfig.getPort();
+    String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
+    String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
+
+
     String clientId = "xyz";
 
     String USERNAME, PASSWORD;
@@ -92,14 +94,12 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
-//        String savedIpAddress = sharedPreferences.getString("ipAddress", "");
-//        int savedPort = sharedPreferences.getInt("port", -1);
     }
 
 
     private void init() {
 
-        mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
+        mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURLSSL, clientId);
 
         switchConnect = findViewById(R.id.btn_connect);
 
@@ -108,7 +108,6 @@ public class MqttConnectionActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
-
                     connectWSSL();
                 } else {
                     disconnectX();
@@ -144,10 +143,11 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
     private String messages = null;
 
-    private void connectX() {
-
+    private void connectCommon(String serverURL) {
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
+
+
 
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
@@ -209,12 +209,16 @@ public class MqttConnectionActivity extends AppCompatActivity {
         }
     }
 
+    private void connectWTCP()  {
+        connectCommon(serverURLTCP);
+    }
+
     private void connectWSSL(){
         // SSL block
         try {
 
             MemoryPersistence persistence = new MemoryPersistence();
-            MqttClient mqttClient = new MqttClient(serverURL, clientId, persistence);
+            MqttClient mqttClient = new MqttClient(serverURLSSL, clientId, persistence);
 
             // Load CA certificate from raw resources
             InputStream caInputStream = getResources().openRawResource(R.raw.ca);
@@ -254,11 +258,9 @@ public class MqttConnectionActivity extends AppCompatActivity {
         catch (Exception e) {
             e.printStackTrace();
         }
-        // reusing the code from connectX method
-        connectX();
+        connectCommon(serverURLSSL);
 
     }
-
 
     private void disconnectX () {
             try {
