@@ -66,13 +66,6 @@ public class DashBoardActivity extends AppCompatActivity {
         stopbrokerbtn = findViewById(R.id.brokerStopBtn);
 
 
-        // Ask user for the username & password by getting their IDs
-        usernameTxt = findViewById(R.id.usernameTxt);
-        passwordTxt = findViewById(R.id.passwordTxt);
-
-
-        //Shared preferences where next activity can use the objects (username & password)
-        sp = getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
 
         subbtn = findViewById(R.id.subBtn);
         subbtn.setEnabled(false);
@@ -114,6 +107,13 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
+        // Ask user for the username & password by getting their IDs
+        usernameTxt = findViewById(R.id.usernameTxt);
+        passwordTxt = findViewById(R.id.passwordTxt);
+
+
+        //Shared preferences where next activity can use the objects (username & password)
+        sp = getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
 
         subbtn.setOnClickListener(new View.OnClickListener() {
             @Override

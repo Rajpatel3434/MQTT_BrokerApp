@@ -7,7 +7,7 @@
     tools:context=".SettingsActivity">
 
     <Button
-        android:id="@+id/SaveBtn"
+        android:id="@+id/SaveBtnStngs"
         android:layout_width="134dp"
 
         android:layout_height="57dp"
@@ -41,7 +41,7 @@
         android:id="@+id/authConstraintlayout"
         android:layout_width="367dp"
         android:layout_height="129dp"
-        app:layout_constraintBottom_toTopOf="@+id/SaveBtn"
+        app:layout_constraintBottom_toTopOf="@+id/SaveBtnStngs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +109,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/portNo.EditTextSetngs"
+        app:layout_constraintEnd_toStartOf="@+id/PortTextStngs"
         app:layout_constraintHorizontal_bias="0.604"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
@@ -123,14 +123,14 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/portNo.EditTextSetngs"
+        app:layout_constraintEnd_toStartOf="@+id/PortTextStngs"
         app:layout_constraintHorizontal_bias="0.604"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.247" />
 
     <EditText
-        android:id="@+id/PortEditTextSetngs"
+        android:id="@+id/IPEditTextStngs"
         android:layout_width="275dp"
         android:layout_height="58dp"
         android:layout_marginTop="28dp"
@@ -144,7 +144,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
-        android:id="@+id/portNo.EditTextSetngs"
+        android:id="@+id/PortTextStngs"
         android:layout_width="276dp"
         android:layout_height="60dp"
         android:layout_marginBottom="368dp"
@@ -169,7 +169,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/portNo.EditTextSetngs"
+        app:layout_constraintTop_toBottomOf="@+id/PortTextStngs"
         app:layout_constraintVertical_bias="0.058" />
 
     <Switch

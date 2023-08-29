@@ -1,13 +1,11 @@
 package com.example.mqtt_brokerapp;
 
-import static android.system.Os.connect;
-import static org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory;
-import static kotlinx.coroutines.flow.FlowKt.subscribe;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ComponentActivity;
 
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,13 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openssl.PEMDecryptorProvider;
-import org.bouncycastle.openssl.PEMEncryptedKeyPair;
-import org.bouncycastle.openssl.PEMKeyPair;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
+
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -43,33 +35,14 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
-import org.eclipse.paho.client.mqttv3.MqttSecurityException;
+
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-
-
-;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.security.KeyManagementException;
-import java.security.KeyPair;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-
-
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 
@@ -84,14 +57,15 @@ public class MqttConnectionActivity extends AppCompatActivity {
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
     String topic = "mqttHQ-client-test";
-    String serverURL = "ssl://broker.hivemq.com:8883";
+//    String serverURL = "ssl://broker.hivemq.com:8883";
     //    String serverURL = "tcp://broker.hivemq.com:1883";
+
+    AppConfig appConfig = AppConfig.getInstance();
+    String serverURL = appConfig.getIpAddress();
+    int port = appConfig.getPort();
     String clientId = "xyz";
 
     String USERNAME, PASSWORD;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +90,10 @@ public class MqttConnectionActivity extends AppCompatActivity {
         USERNAME = sp.getString("Username", "");
         PASSWORD = sp.getString("Password", "");
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
+//        String savedIpAddress = sharedPreferences.getString("ipAddress", "");
+//        int savedPort = sharedPreferences.getInt("port", -1);
     }
 
 
