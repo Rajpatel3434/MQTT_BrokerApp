@@ -22,55 +22,73 @@
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
         app:layout_constraintVertical_bias="0.869" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="309dp"
-        android:layout_height="52dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.539"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.588"
-        app:passwordToggleEnabled="true">
+    <RadioButton
+        android:id="@+id/crtRadioBtn"
+        android:layout_width="141dp"
+        android:layout_height="21dp"
+        android:text="Certificates"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/SSLSwitchBtn"
+        app:layout_constraintEnd_toEndOf="@+id/SSLSwitchBtn"
+        app:layout_constraintHorizontal_bias="0.293"
+        app:layout_constraintStart_toStartOf="@+id/SSLSwitchBtn"
+        app:layout_constraintTop_toTopOf="@+id/SSLSwitchBtn"
+        android:checked="true"
+        app:layout_constraintVertical_bias="0.486" />
 
-        <EditText
-            android:id="@+id/passwordText"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:background="@color/white"
-            android:ems="10"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/authConstraintlayout"
+        android:layout_width="367dp"
+        android:layout_height="129dp"
+        app:layout_constraintBottom_toTopOf="@+id/SaveBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AuthSwitchBtnSetngs"
+        app:layout_constraintVertical_bias="0.179">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/usernameTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:lineBreakStyle="none">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout1"
+            app:passwordToggleEnabled="true">
 
-        </EditText>
-    </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/passwordTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/passwordText2"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/white"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:lineBreakStyle="none">
+        </com.google.android.material.textfield.TextInputLayout>
 
-    </EditText>
+        <!-- Add more TextInputLayout and EditText pairs as needed -->
 
-    <EditText
-        android:id="@+id/usernameTxt2"
-        android:layout_width="301dp"
-        android:layout_height="39dp"
-        android:background="@color/white"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AuthSwitchBtnSetngs" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -150,10 +168,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/portNo.EditTextSetngs"
-        app:layout_constraintVertical_bias="0.059" />
+        app:layout_constraintVertical_bias="0.058" />
 
     <Switch
         android:id="@+id/AuthSwitchBtnSetngs"
@@ -164,22 +181,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SSLSwitchBtn"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <RadioButton
-        android:id="@+id/crtRadioBtn"
-        android:layout_width="311dp"
-        android:layout_height="37dp"
-        android:text="Certificates"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText2"
-        app:layout_constraintVertical_bias="0.63" />
+        app:layout_constraintVertical_bias="0.053" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

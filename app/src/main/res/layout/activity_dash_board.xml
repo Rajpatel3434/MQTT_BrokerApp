@@ -8,51 +8,53 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/authConstraintlayout"
-        android:layout_width="371dp"
-        android:layout_height="142dp"
+        android:layout_width="387dp"
+        android:layout_height="117dp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.839">
+        app:layout_constraintVertical_bias="0.756">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="231dp"
-            android:layout_height="56dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:passwordToggleEnabled="true"
-            tools:layout_editor_absoluteX="-8dp">
+            android:id="@+id/textInputLayout1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/passwordText"
+                android:id="@+id/usernameTxt"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@color/white"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:lineBreakStyle="none">
+                android:layout_height="47dp"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
 
-            </EditText>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/usernameTxt"
-            android:layout_width="214dp"
-            android:layout_height="37dp"
-            android:background="@color/white"
-            android:ems="10"
-            android:hint="Username"
-            android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/passwordText"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Password"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout1"
+            app:passwordToggleEnabled="true">
 
+            <EditText
+                android:id="@+id/passwordTxt"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Add more TextInputLayout and EditText pairs as needed -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

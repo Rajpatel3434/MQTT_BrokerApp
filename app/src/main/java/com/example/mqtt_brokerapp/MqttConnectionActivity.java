@@ -232,6 +232,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        // SSL block
         try {
             MemoryPersistence persistence = new MemoryPersistence();
             MqttClient mqttClient = new MqttClient(serverURL, clientId, persistence);
@@ -262,20 +263,15 @@ public class MqttConnectionActivity extends AppCompatActivity {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
 
-            Toast.makeText(this, "Actually works!", Toast.LENGTH_SHORT).show();
             // Configure MQTT connection options
             MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
             mqttConnectOptions.setSocketFactory(sslContext.getSocketFactory());
-
             mqttClient.connect(mqttConnectOptions);
-
 
         } catch (
                 Exception e) {
             e.printStackTrace();
         }
-
-
 
     }
 
