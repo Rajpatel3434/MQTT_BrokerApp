@@ -132,7 +132,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
 
-                    connectX();
+                    connectWSSL();
                 } else {
                     disconnectX();
                 }
@@ -166,7 +166,6 @@ public class MqttConnectionActivity extends AppCompatActivity {
     }
 
     private String messages = null;
-
 
     private void connectX() {
 
@@ -231,9 +230,12 @@ public class MqttConnectionActivity extends AppCompatActivity {
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
 
+    private void connectWSSL(){
         // SSL block
         try {
+
             MemoryPersistence persistence = new MemoryPersistence();
             MqttClient mqttClient = new MqttClient(serverURL, clientId, persistence);
 
@@ -268,14 +270,17 @@ public class MqttConnectionActivity extends AppCompatActivity {
             mqttConnectOptions.setSocketFactory(sslContext.getSocketFactory());
             mqttClient.connect(mqttConnectOptions);
 
-        } catch (
-                Exception e) {
+        } catch (MqttException e) {
             e.printStackTrace();
         }
 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        // reusing the code from connectX method
+        connectX();
+
     }
-
-
 
 
     private void disconnectX () {
