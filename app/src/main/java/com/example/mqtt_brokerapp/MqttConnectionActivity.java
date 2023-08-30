@@ -3,6 +3,7 @@ package com.example.mqtt_brokerapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuCompat;
 
 
 import android.app.Activity;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -341,12 +343,22 @@ public class MqttConnectionActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
+            return true;
+        }else if(id == R.id.action_settings){
+            Intent intent = new Intent( MqttConnectionActivity.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

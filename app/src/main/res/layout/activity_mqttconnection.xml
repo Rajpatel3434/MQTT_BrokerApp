@@ -5,6 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/saveBtnMqtt"
+        android:layout_width="134dp"
+
+        android:layout_height="57dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_nukon"
+        android:text="Save"
+        android:textSize="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.869" />
+
     <TextView
         android:layout_width="363dp"
         android:layout_height="31dp"
@@ -70,23 +87,23 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="376dp"
-        android:layout_height="346dp"
+        android:layout_width="370dp"
+        android:layout_height="326dp"
         android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:fadeScrollbars="false"
-        android:scrollbarThumbVertical="@color/white"
-        android:scrollbarSize="8dp"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:paddingLeft="5dp"
+        android:paddingTop="10dp"
         android:paddingRight="7dp"
         android:paddingBottom="5dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="5dp"
-        app:layout_constraintVertical_bias="0.859">
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="8dp"
+        android:scrollbarThumbVertical="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.811">
 
         <TextView
             android:id="@+id/tv_msg"

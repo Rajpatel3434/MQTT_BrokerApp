@@ -129,8 +129,6 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
-
-
         //on pressing Authentication radio button opens up Textview with username and password
         rbAuth = findViewById(R.id.AuthRadioBtn);
         rbNoAuth = findViewById(R.id.noAuthRadioBtn);
