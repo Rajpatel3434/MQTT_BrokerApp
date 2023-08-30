@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +57,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
     private MqttAndroidClient mqttAndroidClient;
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
-    String topic = "mqttHQ-client-test";
+
 //    String serverURL = "ssl://broker.hivemq.com:8883";
     //    String serverURL = "tcp://broker.hivemq.com:1883";
 
@@ -64,9 +65,11 @@ public class MqttConnectionActivity extends AppCompatActivity {
     String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
     String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
 
-    String clientId = "xyz";
+    String topic = appConfig.getTopicName();
+//    String topic = "mqttHQ-client-test";
+    String clientId = appConfig.getClientName();
+//    String clientId = "xyz";
 
-    String USERNAME, PASSWORD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +90,11 @@ public class MqttConnectionActivity extends AppCompatActivity {
             startService(new Intent(MqttConnectionActivity.this, MyBackgroundService.class));
         }
 
-        SharedPreferences sp = getApplicationContext().getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
-        USERNAME = sp.getString("Username", "");
-        PASSWORD = sp.getString("Password", "");
-
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+//        SharedPreferences sp = getApplicationContext().getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
+//        USERNAME = sp.getString("Username", "");
+//        PASSWORD = sp.getString("Password", "");
+//
+//        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
     }
 
@@ -105,12 +108,17 @@ public class MqttConnectionActivity extends AppCompatActivity {
         switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                boolean authState = sharedPreferences.getBoolean("authNoAuthState", false);
+                String username = sharedPreferences.getString("usrnameTxtField", "");
+                String password = sharedPreferences.getString("passwordTxtField", "");
                 boolean sslState = sharedPreferences.getBoolean("sslState", false);
 
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
-                    if (sslState){
+
+                    if ((sslState) && authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
                         Toast.makeText(MqttConnectionActivity.this, "Connection is Encrypted!", Toast.LENGTH_SHORT).show();
                         connectWSSL();
                     } else{
@@ -151,11 +159,9 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
     private String messages = null;
 
-    private void connectCommon(String serverURL) {
+    private void connectCommon(String serverURL, String username, String password) {
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
-
-
 
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
@@ -188,8 +194,8 @@ public class MqttConnectionActivity extends AppCompatActivity {
         try {
 
             MqttConnectOptions options = new MqttConnectOptions();
-            options.setUserName(USERNAME);
-            options.setPassword(PASSWORD.toCharArray());
+            options.setUserName(username);
+            options.setPassword(password.toCharArray());
 
             IMqttToken token = mqttAndroidClient.connect(options);
 
@@ -216,9 +222,12 @@ public class MqttConnectionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
     private void connectWTCP()  {
-        connectCommon(serverURLTCP);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String username = sharedPreferences.getString("usrnameTxtField", "");
+        String password = sharedPreferences.getString("passwordTxtField", "");
+
+        connectCommon(serverURLTCP,username,password);
     }
 
     private void connectWSSL(){
@@ -266,7 +275,10 @@ public class MqttConnectionActivity extends AppCompatActivity {
         catch (Exception e) {
             e.printStackTrace();
         }
-        connectCommon(serverURLSSL);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String username = sharedPreferences.getString("usrnameTxtField", "");
+        String password = sharedPreferences.getString("passwordTxtField", "");
+        connectCommon(serverURLSSL,username,password);
 
     }
 

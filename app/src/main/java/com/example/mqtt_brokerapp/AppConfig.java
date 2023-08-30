@@ -3,11 +3,10 @@ package com.example.mqtt_brokerapp;
 public class AppConfig {
     private static AppConfig instance;
 
-    private String ipAddress;
+    private String ipAddress, topicName, clientName;
     private int port;
 
     private AppConfig() {
-        // Private constructor to prevent external instantiation
     }
 
     public static synchronized AppConfig getInstance() {
@@ -31,5 +30,19 @@ public class AppConfig {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getTopicName(){
+        return topicName;
+    }
+    public void setTopicName(String topicName){
+        this.topicName = topicName;
+    }
+
+    public String getClientName(){
+        return clientName;
+    }
+    public void setClientName(String clientName){
+        this.clientName = clientName;
     }
 }

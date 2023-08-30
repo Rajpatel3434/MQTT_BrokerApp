@@ -110,7 +110,8 @@ public class DashBoardActivity extends AppCompatActivity {
         // Ask user for the username & password by getting their IDs
         usernameTxt = findViewById(R.id.usernameTxtStngs);
         passwordTxt = findViewById(R.id.passwordTxtStngs);
-
+        String usrnameTxtField = usernameTxt.getText().toString();
+        String passwordTxtField= passwordTxt.getText().toString();
 
         //Shared preferences where next activity can use the objects (username & password)
         sp = getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);

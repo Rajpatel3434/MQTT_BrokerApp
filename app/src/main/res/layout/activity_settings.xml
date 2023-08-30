@@ -6,6 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
+    <EditText
+        android:id="@+id/clientEditTextStngs"
+        android:layout_width="275dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="256dp"
+        android:ems="10"
+        android:hint="@string/ClientSettingsField_name"
+        android:inputType="text"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/SSLSwitchBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/clientTextViewSetngs"
+        android:layout_width="81dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="24dp"
+        android:text="ClientID"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/topicEditTextStngs"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.411" />
+
+    <EditText
+        android:id="@+id/topicEditTextStngs"
+        android:layout_width="275dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="192dp"
+        android:ems="10"
+        android:hint="@string/TopicSettingsField_name"
+        android:inputType="text"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/topicTextViewSetngs"
+        android:layout_width="55dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="24dp"
+        android:text="Topic"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/topicEditTextStngs"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.333" />
+
     <Button
         android:id="@+id/SaveBtnStngs"
         android:layout_width="134dp"
@@ -43,10 +103,10 @@
         android:layout_height="129dp"
         app:layout_constraintBottom_toTopOf="@+id/SaveBtnStngs"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintHorizontal_bias="0.363"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AuthSwitchBtnSetngs"
-        app:layout_constraintVertical_bias="0.179">
+        app:layout_constraintVertical_bias="0.211">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout1"
@@ -54,7 +114,7 @@
             android:layout_height="wrap_content"
             android:hint="Username"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -105,7 +165,7 @@
         android:id="@+id/IPTextViewSetngs"
         android:layout_width="55dp"
         android:layout_height="37dp"
-        android:text="IP"
+        android:text="Host"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -124,10 +184,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/PortTextStngs"
-        app:layout_constraintHorizontal_bias="0.604"
+        app:layout_constraintHorizontal_bias="0.558"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.247" />
+        app:layout_constraintTop_toBottomOf="@+id/IPTextViewSetngs"
+        app:layout_constraintVertical_bias="0.068" />
 
     <EditText
         android:id="@+id/IPEditTextStngs"
@@ -138,10 +198,12 @@
         android:hint="@string/IPSettingsField_name"
         android:inputType="text"
         android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/PortTextStngs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.72"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/PortTextStngs"
@@ -168,9 +230,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PortTextStngs"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintVertical_bias="0.277" />
 
     <Switch
         android:id="@+id/AuthSwitchBtnSetngs"
@@ -181,10 +244,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.327"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SSLSwitchBtn"
-        app:layout_constraintVertical_bias="0.053" />
+        app:layout_constraintVertical_bias="0.07" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

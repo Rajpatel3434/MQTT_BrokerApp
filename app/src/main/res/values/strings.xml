@@ -12,5 +12,8 @@
     <string name="previous">Previous</string>
     <string name="IPSettingsField_name">Example: broker.hivemq.com</string>
     <string name="PortSettingsField_name">Example: 1883 </string>
+    <string name="TopicSettingsField_name">Example: test/testName</string>
+    <string name="ClientSettingsField_name">Example: clientId-clientName</string>
+
     <string name="mainActivity2_title">MQTT Broker</string>
 </resources>

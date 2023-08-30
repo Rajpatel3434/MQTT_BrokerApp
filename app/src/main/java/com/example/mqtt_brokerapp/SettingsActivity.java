@@ -22,7 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch switchSSL, switchAuthNoAuth;
     private RadioButton crtRadioBtn;
     private ConstraintLayout authCL;
-    private EditText editTextIP, editTextPort, editUserTxt, editPasswordTxt;
+    private EditText editTextIP, editTextPort, editUserTxt, editPasswordTxt, editTopicTxt, editClientTxt;
     private Button saveBtn;
 
 
@@ -41,11 +41,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
         init();
-
+        //getting instances ID and assigning
         editTextIP = findViewById(R.id.IPEditTextStngs);
         editTextPort = findViewById(R.id.PortTextStngs);
         editUserTxt = findViewById(R.id.usernameTxtStngs);
         editPasswordTxt = findViewById(R.id.passwordTxtStngs);
+        editTopicTxt = findViewById(R.id.topicEditTextStngs);
+        editClientTxt = findViewById(R.id.clientEditTextStngs);
         switchSSL = findViewById(R.id.SSLSwitchBtn);
         switchAuthNoAuth = findViewById(R.id.AuthSwitchBtnSetngs);
         saveBtn = findViewById(R.id.SaveBtnStngs);
@@ -55,16 +57,20 @@ public class SettingsActivity extends AppCompatActivity {
         String savedIP = sharedPreferences.getString("ipAddress","");
         String savedUsername = sharedPreferences.getString("usrnameTxtField", "");
         String savedPassword = sharedPreferences.getString("passwordTxtField", "");
+        String savedTopic = sharedPreferences.getString("topicNameField","");
+        String savedClient = sharedPreferences.getString("clientNameField","");
         int savedPort = sharedPreferences.getInt("port",-1);
         boolean savedSslState = sharedPreferences.getBoolean("sslState", false);
-        boolean savedAuthNoAuthState = sharedPreferences.getBoolean("AuthNoAuthState", false);
+        boolean savedauthNoAuthState = sharedPreferences.getBoolean("authNoAuthState", false);
 
         editTextIP.setText(savedIP);
         editTextPort.setText(savedPort != -1 ? String.valueOf(savedPort) : "");
         editUserTxt.setText(savedUsername);
         editPasswordTxt.setText(savedPassword);
+        editTopicTxt.setText(savedTopic);
+        editClientTxt.setText(savedClient);
         switchSSL.setChecked(savedSslState);
-        switchAuthNoAuth.setChecked(savedAuthNoAuthState);
+        switchAuthNoAuth.setChecked(savedauthNoAuthState);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +79,10 @@ public class SettingsActivity extends AppCompatActivity {
                 String portStr = editTextPort.getText().toString();
                 String usrnameTxtField = editUserTxt.getText().toString();
                 String passwordTxtField= editPasswordTxt.getText().toString();
+                String topicNameField = editTopicTxt.getText().toString();
+                String clientNameField = editClientTxt.getText().toString();
                 boolean sslState = switchSSL.isChecked();
-                boolean AuthNoAuthState = switchAuthNoAuth.isChecked();
+                boolean authNoAuthState = switchAuthNoAuth.isChecked();
 
                 if (portStr.isEmpty() || ipAddress.isEmpty()){
                     Toast.makeText(SettingsActivity.this, "Missing Values!", Toast.LENGTH_SHORT).show();
@@ -85,21 +93,32 @@ public class SettingsActivity extends AppCompatActivity {
                         int port = Integer.parseInt(portStr);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("ipAddress", ipAddress);
-                        editor.putString("usrnameTxtField",usrnameTxtField);
-                        editor.putString("passwordTxtField",passwordTxtField);
+
                         editor.putInt("port", port);
                         editor.putBoolean("sslState", sslState);
-                        editor.putBoolean("AuthNoAuthState",AuthNoAuthState);
+                        editor.putBoolean("authNoAuthState",authNoAuthState);
+                        editor.putString("topicNameField",topicNameField);
+                        editor.putString("clientNameField",clientNameField);
+                        if (authNoAuthState) {
+                            editor.putString("usrnameTxtField",usrnameTxtField);
+                            editor.putString("passwordTxtField",passwordTxtField);
+                        } else {
+                            editor.remove("usrnameTxtField");
+                            editor.remove("passwordTxtField");
+                        }
                         editor.apply();
-
                         appConfig.setIpAddress(ipAddress);
                         appConfig.setPort(port);
+                        appConfig.setTopicName(topicNameField);
+                        appConfig.setClientName(clientNameField);
                         launchDashboardActivity();
                         finish();
                     } else{
                         Toast.makeText(SettingsActivity.this, "Port number must contain digits", Toast.LENGTH_SHORT).show();
                     }
+
                 }
+
             }
         });
     }
