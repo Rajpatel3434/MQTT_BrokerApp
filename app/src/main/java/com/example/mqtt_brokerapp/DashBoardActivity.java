@@ -32,6 +32,7 @@ public class DashBoardActivity extends AppCompatActivity {
     String USERNAME, PASSWORD;
 
     SharedPreferences sp;
+    private static final String PREFS_NAME = "MyPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +65,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
         tView1 = (TextView) findViewById(R.id.stoppedSignView);
         stopbrokerbtn = findViewById(R.id.brokerStopBtn);
-
-
 
         subbtn = findViewById(R.id.subBtn);
         subbtn.setEnabled(false);
@@ -103,7 +102,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 ipadd.setText( "mqtt> IP: "+Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
                 ipadd.setEnabled(true);
                 Toast.makeText(DashBoardActivity.this, "Server started...", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -114,23 +112,18 @@ public class DashBoardActivity extends AppCompatActivity {
         String passwordTxtField= passwordTxt.getText().toString();
 
         //Shared preferences where next activity can use the objects (username & password)
-        sp = getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String username = sharedPreferences.getString("usrnameTxtField", "");
+        String password = sharedPreferences.getString("passwordTxtField", "");
 
         subbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(TextUtils.isEmpty(USERNAME) && TextUtils.isEmpty(PASSWORD)){
-                    usernameTxt.setError("Field cannot be empty");
-                    passwordTxt.setError("Field cannot be empty");
-                    Intent intent = new Intent(DashBoardActivity.this, MqttConnectionActivity.class);
-                    startActivity(intent);
-                    return;
-
-                }
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("Username", USERNAME);
-                editor.putString("Password",PASSWORD);
+                Intent intent = new Intent(DashBoardActivity.this, MqttConnectionActivity.class);
+                startActivity(intent);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("username", username);
+                editor.putString("password",password);
                 editor.commit();
 
             }

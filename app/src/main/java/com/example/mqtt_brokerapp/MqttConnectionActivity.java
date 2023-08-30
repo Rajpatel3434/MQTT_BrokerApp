@@ -90,18 +90,10 @@ public class MqttConnectionActivity extends AppCompatActivity {
             startService(new Intent(MqttConnectionActivity.this, MyBackgroundService.class));
         }
 
-//        SharedPreferences sp = getApplicationContext().getSharedPreferences("MyUserCreds", Context.MODE_PRIVATE);
-//        USERNAME = sp.getString("Username", "");
-//        PASSWORD = sp.getString("Password", "");
-//
-//        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-
     }
 
     private static final String PREFS_NAME = "MyPrefs";
     private void init() {
-
-        mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURLSSL, clientId);
 
         switchConnect = findViewById(R.id.btn_connect);
 
@@ -115,10 +107,9 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 String password = sharedPreferences.getString("passwordTxtField", "");
                 boolean sslState = sharedPreferences.getBoolean("sslState", false);
 
-                if (isChecked) {
+                if (isChecked  && authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
                     tvStatus.setText("Connecting...");
-
-                    if ((sslState) && authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+                    if ((sslState)){
                         Toast.makeText(MqttConnectionActivity.this, "Connection is Encrypted!", Toast.LENGTH_SHORT).show();
                         connectWSSL();
                     } else{
@@ -222,11 +213,11 @@ public class MqttConnectionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private void connectWTCP()  {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String username = sharedPreferences.getString("usrnameTxtField", "");
         String password = sharedPreferences.getString("passwordTxtField", "");
-
         connectCommon(serverURLTCP,username,password);
     }
 
