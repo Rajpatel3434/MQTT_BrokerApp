@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch switchSSL, switchAuthNoAuth;
     private RadioButton crtRadioBtn;
     private ConstraintLayout authCL;
-    private EditText editTextIP, editTextPort;
+    private EditText editTextIP, editTextPort, editUserTxt, editPasswordTxt;
     private Button saveBtn;
 
 
@@ -45,22 +44,40 @@ public class SettingsActivity extends AppCompatActivity {
 
         editTextIP = findViewById(R.id.IPEditTextStngs);
         editTextPort = findViewById(R.id.PortTextStngs);
+        editUserTxt = findViewById(R.id.usernameTxtStngs);
+        editPasswordTxt = findViewById(R.id.passwordTxtStngs);
+        switchSSL = findViewById(R.id.SSLSwitchBtn);
+        switchAuthNoAuth = findViewById(R.id.AuthSwitchBtnSetngs);
         saveBtn = findViewById(R.id.SaveBtnStngs);
 
         final AppConfig appConfig = AppConfig.getInstance();
         final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String savedIP = sharedPreferences.getString("ipAddress","");
+        String savedUsername = sharedPreferences.getString("usrnameTxtField", "");
+        String savedPassword = sharedPreferences.getString("passwordTxtField", "");
         int savedPort = sharedPreferences.getInt("port",-1);
+        boolean savedSslState = sharedPreferences.getBoolean("sslState", false);
+        boolean savedAuthNoAuthState = sharedPreferences.getBoolean("AuthNoAuthState", false);
 
         editTextIP.setText(savedIP);
         editTextPort.setText(savedPort != -1 ? String.valueOf(savedPort) : "");
+        editUserTxt.setText(savedUsername);
+        editPasswordTxt.setText(savedPassword);
+        switchSSL.setChecked(savedSslState);
+        switchAuthNoAuth.setChecked(savedAuthNoAuthState);
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String ipAddress = editTextIP.getText().toString();
                 String portStr = editTextPort.getText().toString();
-                if (portStr.isEmpty()){
-                    Toast.makeText(SettingsActivity.this, "Empty Field!", Toast.LENGTH_SHORT).show();
+                String usrnameTxtField = editUserTxt.getText().toString();
+                String passwordTxtField= editPasswordTxt.getText().toString();
+                boolean sslState = switchSSL.isChecked();
+                boolean AuthNoAuthState = switchAuthNoAuth.isChecked();
+
+                if (portStr.isEmpty() || ipAddress.isEmpty()){
+                    Toast.makeText(SettingsActivity.this, "Missing Values!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else{
@@ -68,7 +85,11 @@ public class SettingsActivity extends AppCompatActivity {
                         int port = Integer.parseInt(portStr);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("ipAddress", ipAddress);
+                        editor.putString("usrnameTxtField",usrnameTxtField);
+                        editor.putString("passwordTxtField",passwordTxtField);
                         editor.putInt("port", port);
+                        editor.putBoolean("sslState", sslState);
+                        editor.putBoolean("AuthNoAuthState",AuthNoAuthState);
                         editor.apply();
 
                         appConfig.setIpAddress(ipAddress);
@@ -78,9 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
                     } else{
                         Toast.makeText(SettingsActivity.this, "Port number must contain digits", Toast.LENGTH_SHORT).show();
                     }
-             
                 }
-
             }
         });
     }

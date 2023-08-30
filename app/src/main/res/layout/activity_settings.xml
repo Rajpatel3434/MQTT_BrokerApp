@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/usernameTxt"
+                android:id="@+id/usernameTxtStngs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
@@ -78,7 +78,7 @@
             app:passwordToggleEnabled="true">
 
             <EditText
-                android:id="@+id/passwordTxt"
+                android:id="@+id/passwordTxtStngs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"

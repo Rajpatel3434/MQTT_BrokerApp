@@ -64,7 +64,6 @@ public class MqttConnectionActivity extends AppCompatActivity {
     String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
     String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
 
-
     String clientId = "xyz";
 
     String USERNAME, PASSWORD;
@@ -96,7 +95,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
     }
 
-
+    private static final String PREFS_NAME = "MyPrefs";
     private void init() {
 
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURLSSL, clientId);
@@ -106,10 +105,19 @@ public class MqttConnectionActivity extends AppCompatActivity {
         switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                boolean sslState = sharedPreferences.getBoolean("sslState", false);
+
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
-                    connectWSSL();
+                    if (sslState){
+                        Toast.makeText(MqttConnectionActivity.this, "Connection is Encrypted!", Toast.LENGTH_SHORT).show();
+                        connectWSSL();
+                    } else{
+                        connectWTCP();
+                    }
                 } else {
+                    Toast.makeText(MqttConnectionActivity.this, "Disconnected...", Toast.LENGTH_SHORT).show();
                     disconnectX();
                 }
             }
@@ -190,7 +198,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 public void onSuccess(IMqttToken asyncActionToken) {
 
                     Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
-                    Toast.makeText(MqttConnectionActivity.this, "connect onSuccess", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MqttConnectionActivity.this, "Connected Successfully!", Toast.LENGTH_SHORT).show();
                     tvStatus.setText("Connection Sucessful!");
                     switchConnect.setChecked(true);
                 }
