@@ -111,7 +111,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
 // authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
-                    if ((sslState)){
+                    if (sslState){
                         Toast.makeText(MqttConnectionActivity.this, "Connection is Encrypted!", Toast.LENGTH_SHORT).show();
                         connectWSSL();
                     } else{

@@ -85,12 +85,12 @@ public class SettingsActivity extends AppCompatActivity {
                 boolean sslState = switchSSL.isChecked();
                 boolean authNoAuthState = switchAuthNoAuth.isChecked();
 
-                if (portStr.isEmpty() || ipAddress.isEmpty()){
+                if (portStr.isEmpty() || ipAddress.isEmpty() || (authNoAuthState && (usrnameTxtField.isEmpty() && passwordTxtField.isEmpty()))){
                     Toast.makeText(SettingsActivity.this, "Missing Values!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else{
-                    if (isNumeric(portStr)){
+                    if (isNumeric(portStr) ){
                         int port = Integer.parseInt(portStr);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("ipAddress", ipAddress);
@@ -119,7 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
                         launchDashboardActivity();
                         finish();
                     } else{
-                        Toast.makeText(SettingsActivity.this, "Port number must contain digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this, "Fields cannot be empty!", Toast.LENGTH_SHORT).show();
                     }
 
                 }
