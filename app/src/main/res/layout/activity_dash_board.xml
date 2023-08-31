@@ -6,58 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".DashBoardActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/authConstraintlayout"
-        android:layout_width="387dp"
-        android:layout_height="117dp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.756">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <EditText
-                android:id="@+id/usernameTxtStngs"
-                android:layout_width="match_parent"
-                android:layout_height="47dp"
-                android:imeOptions="actionNext"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout1"
-            app:passwordToggleEnabled="true">
-
-            <EditText
-                android:id="@+id/passwordTxtStngs"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Add more TextInputLayout and EditText pairs as needed -->
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <Button
         android:id="@+id/brokerStartBtn"
         android:layout_width="167dp"
@@ -94,12 +42,12 @@
 
     <Button
         android:id="@+id/subBtn"
-        android:layout_width="167dp"
+        android:layout_width="144dp"
 
-        android:layout_height="56dp"
+        android:layout_height="53dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/button_nukon"
-        android:text="Messages"
+        android:text="Next"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -124,27 +72,93 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QuickSettings"
+        android:text="Connection Details"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.132" />
+        app:layout_constraintVertical_bias="0.117" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="375dp"
         android:layout_height="211dp"
         android:padding="20dp"
-        android:text="IP"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.305"
+        app:layout_constraintHorizontal_bias="0.361"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.194" />
+        app:layout_constraintVertical_bias="0.182" />
+
+    <TextView
+        android:id="@+id/hostTextView"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:text="Host"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.088" />
+
+    <TextView
+        android:id="@+id/connectionTypeTextView"
+        android:layout_width="114dp"
+        android:layout_height="24dp"
+        android:ems="10"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.416"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/ipTv"
+        app:layout_constraintVertical_bias="0.875" />
+
+    <TextView
+        android:id="@+id/authText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connection Type"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.872" />
+
+    <TextView
+        android:id="@+id/authTextView"
+        android:layout_width="114dp"
+        android:layout_height="24dp"
+        android:ems="10"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.634"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/ipTv"
+        app:layout_constraintVertical_bias="0.514" />
+
+    <TextView
+        android:id="@+id/authText"
+        android:layout_width="167dp"
+        android:layout_height="28dp"
+        android:text="Authentication Provided"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.625" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -218,8 +232,8 @@
 
     <TextView
         android:id="@+id/ipTv"
-        android:layout_width="139dp"
-        android:layout_height="20dp"
+        android:layout_width="135dp"
+        android:layout_height="26dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.299"
@@ -227,43 +241,17 @@
         app:layout_constraintTop_toTopOf="@+id/textView2"
         app:layout_constraintVertical_bias="0.115" />
 
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="111dp"
-        android:layout_height="37dp"
+    <TextView
+        android:id="@+id/portTextView"
+        android:layout_width="120dp"
+        android:layout_height="25dp"
         android:ems="10"
-        android:inputType="text"
-        android:text="1883"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/ipTv"
-        app:layout_constraintVertical_bias="0.116" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="190dp"
-        android:layout_height="61dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText"
-        app:layout_constraintVertical_bias="0.216">
-
-        <RadioButton
-            android:id="@+id/noAuthRadioBtn"
-            android:layout_width="179dp"
-            android:layout_height="26dp"
-            android:text="No Authentication" />
-
-        <RadioButton
-            android:id="@+id/AuthRadioBtn"
-            android:layout_width="150dp"
-            android:layout_height="30dp"
-            android:text="Authentication" />
-    </RadioGroup>
+        app:layout_constraintVertical_bias="0.173" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

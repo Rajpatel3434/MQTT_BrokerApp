@@ -7,12 +7,12 @@
 
     <Button
         android:id="@+id/saveBtnMqtt"
-        android:layout_width="134dp"
+        android:layout_width="151dp"
 
-        android:layout_height="57dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_nukon"
-        android:text="Save"
+        android:text="Done"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

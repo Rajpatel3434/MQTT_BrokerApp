@@ -23,15 +23,12 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class DashBoardActivity extends AppCompatActivity {
     private Button stopbrokerbtn, startbrokerbtn, subbtn;
-    private TextView tView1, tView2, ipadd, ipaddtv;
-     EditText usernameTxt, passwordTxt;
-    private ConstraintLayout authCL;
-    private RadioButton rbAuth, rbNoAuth;
-    String USERNAME, PASSWORD;
+    private TextView tView1, ipadd, ipaddtv, portTextView, authTextView, connectionTypeTextView;
 
-    SharedPreferences sp;
     private static final String PREFS_NAME = "MyPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +44,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_dash_board);
 
+        AppConfig appConfig = new AppConfig();
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -55,13 +53,44 @@ public class DashBoardActivity extends AppCompatActivity {
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         //ip address when start button is pressed
         ipadd = (TextView) findViewById(R.id.startSignView);
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
 
         //ip address for setting up text view for the display part
         ipaddtv = (TextView) findViewById(R.id.ipTv);
-        ipaddtv.setText( Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
+        String ipAddress = sharedPreferences.getString("ipAddress","");
+        ipaddtv.setText(ipAddress);
+
+        //Port details
+
+        int portNumber = sharedPreferences.getInt("port", 0);
+
+        portTextView = findViewById(R.id.portTextView);
+
+        if (portNumber != 0) {
+            portTextView.setText(String.valueOf(portNumber));
+        } else {
+            portTextView.setText("");
+        }
+
+        authTextView = findViewById(R.id.authTextView);
+        boolean authTextViewBool = sharedPreferences.getBoolean("authNoAuthState",false);
+
+        if(authTextViewBool == true){
+            authTextView.setText("Yes");
+        } else{
+            authTextView.setText("No");
+        }
+
+        connectionTypeTextView = findViewById(R.id.connectionTypeTextView);
+        boolean connectionTypeBool = sharedPreferences.getBoolean("sslState",false);
+        if (connectionTypeBool == true){
+            connectionTypeTextView.setText("SSL");
+        } else {
+            connectionTypeTextView.setText("TCP");
+        }
 
         tView1 = (TextView) findViewById(R.id.stoppedSignView);
         stopbrokerbtn = findViewById(R.id.brokerStopBtn);
@@ -106,57 +135,18 @@ public class DashBoardActivity extends AppCompatActivity {
         });
 
         // Ask user for the username & password by getting their IDs
-        usernameTxt = findViewById(R.id.usernameTxtStngs);
-        passwordTxt = findViewById(R.id.passwordTxtStngs);
-        String usrnameTxtField = usernameTxt.getText().toString();
-        String passwordTxtField= passwordTxt.getText().toString();
 
-        //Shared preferences where next activity can use the objects (username & password)
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String username = sharedPreferences.getString("usrnameTxtField", "");
-        String password = sharedPreferences.getString("passwordTxtField", "");
 
         subbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, MqttConnectionActivity.class);
+                Intent intent = new Intent(DashBoardActivity.this, SettingsActivity.class);
                 startActivity(intent);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("username", username);
-                editor.putString("password",password);
-                editor.commit();
-
             }
         });
 
         //on pressing Authentication radio button opens up Textview with username and password
-        rbAuth = findViewById(R.id.AuthRadioBtn);
-        rbNoAuth = findViewById(R.id.noAuthRadioBtn);
 
-
-        authCL = findViewById(R.id.authConstraintlayout);
-        authCL.setVisibility(View.GONE);
-
-
-        rbAuth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (authCL.getVisibility() == View.GONE){
-                    authCL.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
-
-        rbNoAuth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (authCL.getVisibility() == View.VISIBLE){
-                    authCL.setVisibility(View.GONE);
-                }
-            }
-        });
 
         this.refreshButtons();
 

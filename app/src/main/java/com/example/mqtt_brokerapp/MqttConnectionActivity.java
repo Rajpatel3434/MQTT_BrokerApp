@@ -72,6 +72,8 @@ public class MqttConnectionActivity extends AppCompatActivity {
     String clientId = appConfig.getClientName();
 //    String clientId = "xyz";
 
+    String username = appConfig.getUserNameTxt();
+    String password = appConfig.getPasswordTxt();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +106,10 @@ public class MqttConnectionActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                boolean authState = sharedPreferences.getBoolean("authNoAuthState", false);
-                String username = sharedPreferences.getString("usrnameTxtField", "");
-                String password = sharedPreferences.getString("passwordTxtField", "");
-                boolean sslState = sharedPreferences.getBoolean("sslState", false);
-
-                if (isChecked  && authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+                boolean authState = appConfig.getAuthNoAuthState();
+                boolean sslState = appConfig.getSslState();
+// authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)
+                if (isChecked) {
                     tvStatus.setText("Connecting...");
                     if ((sslState)){
                         Toast.makeText(MqttConnectionActivity.this, "Connection is Encrypted!", Toast.LENGTH_SHORT).show();
@@ -124,7 +124,6 @@ public class MqttConnectionActivity extends AppCompatActivity {
             }
         });
 
-
         btnSubscribe = findViewById(R.id.btn_subscribe);
 
         btnSubscribe.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +133,6 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 subscribe();
             }
         });
-
 
         tvMsg = findViewById(R.id.tv_msg);
         tvStatus = findViewById(R.id.text);
@@ -152,7 +150,9 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
     private String messages = null;
 
-    private void connectCommon(String serverURL, String username, String password) {
+    private void connectCommon(String serverURL, String username, String password)   {
+        this.username = username;
+        this.password = password;
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
 
@@ -217,9 +217,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
     }
 
     private void connectWTCP()  {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String username = sharedPreferences.getString("usrnameTxtField", "");
-        String password = sharedPreferences.getString("passwordTxtField", "");
+
         connectCommon(serverURLTCP,username,password);
     }
 
@@ -268,9 +266,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
         catch (Exception e) {
             e.printStackTrace();
         }
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String username = sharedPreferences.getString("usrnameTxtField", "");
-        String password = sharedPreferences.getString("passwordTxtField", "");
+
         connectCommon(serverURLSSL,username,password);
 
     }

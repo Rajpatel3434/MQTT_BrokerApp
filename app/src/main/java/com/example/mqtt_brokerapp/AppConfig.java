@@ -1,12 +1,15 @@
 package com.example.mqtt_brokerapp;
 
-public class AppConfig {
+import java.io.Serializable;
+
+public class AppConfig implements Serializable {
     private static AppConfig instance;
 
-    private String ipAddress, topicName, clientName;
+    private String ipAddress, topicName, clientName, userNameTxt, passwordTxt;
+    private boolean authNoAuthState, sslState;
     private int port;
 
-    private AppConfig() {
+    AppConfig() {
     }
 
     public static synchronized AppConfig getInstance() {
@@ -45,4 +48,15 @@ public class AppConfig {
     public void setClientName(String clientName){
         this.clientName = clientName;
     }
+    public String getUserNameTxt(){return userNameTxt;}
+    public void setUserNameTxt(String userNameTxt){this.userNameTxt = userNameTxt;}
+
+    public void setPasswordTxt(String passwordTxt){this.passwordTxt = passwordTxt;}
+    public String getPasswordTxt() { return passwordTxt;}
+
+    public void setAuthNoAuthState(boolean authNoAuthState){this.authNoAuthState = authNoAuthState;}
+    public boolean getAuthNoAuthState(){return authNoAuthState;}
+
+    public void setSslState(boolean sslState){this.sslState = sslState;}
+    public boolean getSslState(){return sslState;}
 }

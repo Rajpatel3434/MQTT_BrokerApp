@@ -33,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+
         //Toolbar modification
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -111,6 +112,10 @@ public class SettingsActivity extends AppCompatActivity {
                         appConfig.setPort(port);
                         appConfig.setTopicName(topicNameField);
                         appConfig.setClientName(clientNameField);
+                        appConfig.setUserNameTxt(usrnameTxtField);
+                        appConfig.setPasswordTxt(passwordTxtField);
+                        appConfig.setAuthNoAuthState(authNoAuthState);
+                        appConfig.setSslState(sslState);
                         launchDashboardActivity();
                         finish();
                     } else{
