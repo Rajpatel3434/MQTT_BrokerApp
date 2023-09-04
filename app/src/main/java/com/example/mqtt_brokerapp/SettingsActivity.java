@@ -15,7 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -93,22 +92,6 @@ public class SettingsActivity extends AppCompatActivity {
                 else{
                     if (isNumeric(portStr) ){
                         int port = Integer.parseInt(portStr);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("ipAddress", ipAddress);
-
-                        editor.putInt("port", port);
-                        editor.putBoolean("sslState", sslState);
-                        editor.putBoolean("authNoAuthState",authNoAuthState);
-                        editor.putString("topicNameField",topicNameField);
-                        editor.putString("clientNameField",clientNameField);
-                        if (authNoAuthState) {
-                            editor.putString("usrnameTxtField",usrnameTxtField);
-                            editor.putString("passwordTxtField",passwordTxtField);
-                        } else {
-                            editor.remove("usrnameTxtField");
-                            editor.remove("passwordTxtField");
-                        }
-                        editor.apply();
                         appConfig.setIpAddress(ipAddress);
                         appConfig.setPort(port);
                         appConfig.setTopicName(topicNameField);
@@ -137,11 +120,10 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
     private void launchDashboardActivity() {
-        Intent intent = new Intent(this, MqttConnectionActivity.class);
+        Intent intent = new Intent(this, MqttDriverActivity.class);
         startActivity(intent);
         finish();
     }
-
 
     private void init(){
         authCL = findViewById(R.id.authConstraintlayout);
@@ -179,8 +161,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

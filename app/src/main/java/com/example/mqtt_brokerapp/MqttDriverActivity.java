@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +44,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 
-public class MqttConnectionActivity extends AppCompatActivity {
+public class MqttDriverActivity extends AppCompatActivity {
 
 
     private static final String TAG = "MyTag";
@@ -79,9 +78,9 @@ public class MqttConnectionActivity extends AppCompatActivity {
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(MqttConnectionActivity.this, MyBackgroundService.class));
+            startForegroundService(new Intent(MqttDriverActivity.this, MyBackgroundService.class));
         } else {
-            startService(new Intent(MqttConnectionActivity.this, MyBackgroundService.class));
+            startService(new Intent(MqttDriverActivity.this, MyBackgroundService.class));
         }
 
     }
@@ -101,13 +100,13 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
                     if (sslState){
-                        Toast.makeText(MqttConnectionActivity.this, "Connection is Encrypted!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MqttDriverActivity.this, "Connection is Encrypted!", Toast.LENGTH_SHORT).show();
                         connectWSSL();
                     } else{
                         connectWTCP();
                     }
                 } else {
-                    Toast.makeText(MqttConnectionActivity.this, "Disconnected...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MqttDriverActivity.this, "Disconnected...", Toast.LENGTH_SHORT).show();
                     disconnectX();
                 }
             }
@@ -163,11 +162,11 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 boolean btnPublished = btnPublish.isActivated();
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("textStatus",textStatus); // working
-                editor.putString("textMsg",textMsg); // not working
-                editor.putBoolean("btnConnect",btnConnect); // connect working
-                editor.putBoolean("btnSubscribe",btnSubscribed); // subscribe working
-                editor.putBoolean("btnPublish",btnPublished); // publish working
+                editor.putString("textStatus",textStatus);
+                editor.putString("textMsg",textMsg);
+                editor.putBoolean("btnConnect",btnConnect);
+                editor.putBoolean("btnSubscribe",btnSubscribed);
+                editor.putBoolean("btnPublish",btnPublished);
                 editor.apply();
                 launchDashboardActivity();
                 finish();
@@ -177,7 +176,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
     }
     private void launchDashboardActivity() {
-        Intent intent = new Intent(this, MainActivity2.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -231,7 +230,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 public void onSuccess(IMqttToken asyncActionToken) {
 
                     Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
-                    Toast.makeText(MqttConnectionActivity.this, "Connected Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MqttDriverActivity.this, "Connected Successfully!", Toast.LENGTH_SHORT).show();
                     tvStatus.setText("Connection Sucessful!");
                     switchConnect.setChecked(true);
                 }
@@ -387,7 +386,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         }else if(id == R.id.action_settings){
-            Intent intent = new Intent( MqttConnectionActivity.this, SettingsActivity.class);
+            Intent intent = new Intent( MqttDriverActivity.this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }

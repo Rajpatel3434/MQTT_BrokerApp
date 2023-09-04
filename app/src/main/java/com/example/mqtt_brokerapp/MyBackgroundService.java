@@ -212,5 +212,4 @@ public class MyBackgroundService extends Service {
         updateNotification();
     }
 
-
 }

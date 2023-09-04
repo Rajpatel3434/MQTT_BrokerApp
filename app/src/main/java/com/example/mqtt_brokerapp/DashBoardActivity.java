@@ -2,69 +2,60 @@ package com.example.mqtt_brokerapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.MenuCompat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 public class DashBoardActivity extends AppCompatActivity {
-    private Button stopbrokerbtn, startbrokerbtn, subbtn;
-    private TextView tView1, ipadd, ipaddtv, portTextView, authTextView, connectionTypeTextView;
-
+    private Button stopBrokerBtn, startBrokerBtn, subBtn;
+    private TextView tView1, ipAdd, ipAddTv, portTextView, authTextView, connectionTypeTextView;
+    private WifiManager wifiManager;
     private static final String PREFS_NAME = "MyPrefs";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("APP","OnCreate");
+        Log.d("APP", "OnCreate");
 
+        // Background service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(new Intent(this, MyBackgroundService.class));
         } else {
             startService(new Intent(this, MyBackgroundService.class));
         }
-
-
         setContentView(R.layout.activity_dash_board);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+        setInstances();
+        refreshButtons();
+    }
+    private void setInstances(){
+        //setup all the instances and store using sharedpreferences
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        //ip address when start button is pressed
-        ipadd = (TextView) findViewById(R.id.startSignView);
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
 
-        //ip address for setting up text view for the display part
-        ipaddtv = (TextView) findViewById(R.id.ipTv);
-        String ipAddress = sharedPreferences.getString("ipAddress","");
-        ipaddtv.setText(ipAddress);
-
-        //Port details
+        ipAdd = findViewById(R.id.startSignView);
+        ipAddTv = findViewById(R.id.ipTv);
+        String ipAddress = sharedPreferences.getString("ipAddress", "");
+        ipAddTv.setText(ipAddress);
 
         int portNumber = sharedPreferences.getInt("port", 0);
-
         portTextView = findViewById(R.id.portTextView);
 
         if (portNumber != 0) {
@@ -74,111 +65,95 @@ public class DashBoardActivity extends AppCompatActivity {
         }
 
         authTextView = findViewById(R.id.authTextView);
-        boolean authTextViewBool = sharedPreferences.getBoolean("authNoAuthState",false);
+        boolean authTextViewBool = sharedPreferences.getBoolean("authNoAuthState", false);
 
-        if(authTextViewBool == true){
+        if (authTextViewBool) {
             authTextView.setText("Yes");
-        } else{
+        } else {
             authTextView.setText("No");
         }
 
         connectionTypeTextView = findViewById(R.id.connectionTypeTextView);
-        boolean connectionTypeBool = sharedPreferences.getBoolean("sslState",false);
-        if (connectionTypeBool == true){
+        boolean connectionTypeBool = sharedPreferences.getBoolean("sslState", false);
+
+        if (connectionTypeBool) {
             connectionTypeTextView.setText("SSL");
         } else {
             connectionTypeTextView.setText("TCP");
         }
 
-        tView1 = (TextView) findViewById(R.id.stoppedSignView);
-        stopbrokerbtn = findViewById(R.id.brokerStopBtn);
+        tView1 = findViewById(R.id.stoppedSignView);
+        stopBrokerBtn = findViewById(R.id.brokerStopBtn);
 
-        subbtn = findViewById(R.id.subBtn);
-        subbtn.setEnabled(false);
-        //on pressing stop button shows server is stopped
-        stopbrokerbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
-                // finish();
-                startbrokerbtn.setEnabled(true);
-                stopbrokerbtn.setEnabled(false);
-                subbtn.setEnabled(false);
-                tView1.setText("mqtt>Server is not running");
-                ipadd.setText("");
-            }
-        });
+        subBtn = findViewById(R.id.subBtn);
+        subBtn.setEnabled(false);
 
-        //on pressing start button shows server is started
-        startbrokerbtn = findViewById(R.id.brokerStartBtn);
-        startbrokerbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        stopBrokerBtn.setOnClickListener(v -> stopBrokerService());
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
-                } else {
-                    startService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
-                }
-                startbrokerbtn.setEnabled(false);
-                stopbrokerbtn.setEnabled(true);
-                subbtn.setEnabled(true);
-                String display = "mqtt> Server is started... ";
-                tView1.setText(display);
-                ipadd.setText( "mqtt> IP: "+Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
-                ipadd.setEnabled(true);
-                Toast.makeText(DashBoardActivity.this, "Server started...", Toast.LENGTH_SHORT).show();
-            }
-        });
+        startBrokerBtn = findViewById(R.id.brokerStartBtn);
+        startBrokerBtn.setOnClickListener(v -> startBrokerService());
 
-
-        // Ask user for the username & password by getting their IDs
-
-        subbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        this.refreshButtons();
-
+        subBtn.setOnClickListener(v -> openSettingsActivity());
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        this.refreshButtons();
+        refreshButtons();
+    }
+
+    private void stopBrokerService() {
+        stopService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
+        startBrokerBtn.setEnabled(true);
+        stopBrokerBtn.setEnabled(false);
+        subBtn.setEnabled(false);
+        tView1.setText("mqtt> Server is not running");
+        ipAdd.setText("");
+    }
+
+    private void startBrokerService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
+        } else {
+            startService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
+        }
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        startBrokerBtn.setEnabled(false);
+        stopBrokerBtn.setEnabled(true);
+        subBtn.setEnabled(true);
+        String display = "mqtt> Server is started... ";
+        tView1.setText(display);
+        ipAdd.setText("mqtt> IP: " + Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
+        ipAdd.setEnabled(true);
+        Toast.makeText(DashBoardActivity.this, "Server started...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openSettingsActivity() {
+        Intent intent = new Intent(DashBoardActivity.this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void refreshButtons() {
-        startbrokerbtn.setEnabled( !MyBackgroundService.isRunning() );
-        stopbrokerbtn.setEnabled( MyBackgroundService.isRunning() );
-        subbtn.setEnabled(MyBackgroundService.isRunning());
+        startBrokerBtn.setEnabled(!MyBackgroundService.isRunning());
+        stopBrokerBtn.setEnabled(MyBackgroundService.isRunning());
+        subBtn.setEnabled(MyBackgroundService.isRunning());
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuCompat.setGroupDividerEnabled(menu, true);
         return super.onCreateOptionsMenu(menu);
     }
-
-
-    ///Back button in the toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
-        } else if(id == R.id.action_settings){
-            Intent intent = new Intent( DashBoardActivity.this, SettingsActivity.class);
-            startActivity(intent);
+        } else if (id == R.id.action_settings) {
+            openSettingsActivity();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
