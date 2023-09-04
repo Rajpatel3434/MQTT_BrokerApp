@@ -39,10 +39,6 @@
             android:exported="false"
             android:label="@string/dashboard_activity_name"
             android:windowSoftInputMode="adjustPan" />
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="false"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
         <activity
             android:name=".MqttDriverActivity"
             android:exported="false"

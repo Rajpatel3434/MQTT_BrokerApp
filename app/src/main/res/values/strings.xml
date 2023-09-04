@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MQTT_BrokerApp</string>
+    <string name="app_name">MQTT Broker by Nukon</string>
     <string name="dashboard_activity_name">Dashboard</string>
     <string name="Mqtt_connection_name">Messaging</string>
     <string name="Settings_name">Settings</string>
@@ -16,4 +16,11 @@
     <string name="ClientSettingsField_name">Example: clientId-clientName</string>
 
     <string name="mainActivity2_title">MQTT Broker</string>
+    <string-array name="QoS_numbers">
+        <item> 0 </item>
+        <item> 1 </item>
+        <item> 2 </item>
+    </string-array>
+
+
 </resources>

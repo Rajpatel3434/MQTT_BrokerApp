@@ -1,8 +1,6 @@
 package com.example.mqtt_brokerapp;
 
 
-import static android.view.View.GONE;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
@@ -17,10 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +69,7 @@ public class MqttDriverActivity extends AppCompatActivity {
     String username = appConfig.getUserNameTxt();
     String password = appConfig.getPasswordTxt();
 
+    private int selectedQoS = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +180,35 @@ public class MqttDriverActivity extends AppCompatActivity {
             }
         });
 
+        Spinner qosSpinner = findViewById(R.id.qosSpinnerId);
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this, R.array.QoS_numbers, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        qosSpinner.setAdapter(adapter);
+        qosSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selectedQosString = parentView.getItemAtPosition(position).toString();
+                selectedQoS = extractQoSValue(selectedQosString);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing here
+            }
+        });
+
+    }
+    private int extractQoSValue(String qosString) {
+        switch (qosString) {
+            case "0":
+                return 0;
+            case "1":
+                return 1;
+            case "2":
+                return 2;
+            default:
+                return 0; // Default to QoS 0 if not recognized
+        }
     }
     private void launchDashboardActivity() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -360,7 +391,8 @@ public class MqttDriverActivity extends AppCompatActivity {
 
     private void publish() {
         MqttMessage message = new MqttMessage();
-        message.setQos(0);
+        message.setQos(selectedQoS);
+
         message.setRetained(false);
         String msg = inputMsg.getText().toString();
         message.setPayload((msg).getBytes());

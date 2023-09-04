@@ -239,7 +239,7 @@
     <Switch
         android:id="@+id/AuthSwitchBtnSetngs"
         android:layout_width="362dp"
-        android:layout_height="55dp"
+        android:layout_height="66dp"
         android:text="Authentication"
         android:textSize="20sp"
         android:textStyle="bold"
