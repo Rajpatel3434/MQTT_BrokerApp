@@ -26,11 +26,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.Manifest;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity2 extends AppCompatActivity {
 
-    private Button button;
+    private Button btnStart;
     String[] permissions = new String[]{
             Manifest.permission.POST_NOTIFICATIONS
     };
@@ -48,8 +49,8 @@ public class MainActivity2 extends AppCompatActivity {
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
-        button = findViewById(R.id.mainActivity2_startStop_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        btnStart = findViewById(R.id.mainActivity2_startStop_button);
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent( MainActivity2.this, DashBoardActivity.class);
@@ -63,8 +64,8 @@ public class MainActivity2 extends AppCompatActivity {
 
             }
         });
-    }
 
+    }
 
     public void requestPermissionNotification(){
         if(ContextCompat.checkSelfPermission(MainActivity2.this,permissions[0]) == PackageManager.PERMISSION_GRANTED){
@@ -114,6 +115,8 @@ public class MainActivity2 extends AppCompatActivity {
                 })
                 .show();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

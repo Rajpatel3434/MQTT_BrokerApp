@@ -44,8 +44,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_dash_board);
 
-        AppConfig appConfig = new AppConfig();
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -106,8 +104,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 startbrokerbtn.setEnabled(true);
                 stopbrokerbtn.setEnabled(false);
                 subbtn.setEnabled(false);
-                String display = "mqtt> Server is stopped...";
-                tView1.setText(display);
+                tView1.setText("mqtt>Server is not running");
                 ipadd.setText("");
             }
         });
@@ -134,8 +131,8 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
-        // Ask user for the username & password by getting their IDs
 
+        // Ask user for the username & password by getting their IDs
 
         subbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,13 +142,9 @@ public class DashBoardActivity extends AppCompatActivity {
             }
         });
 
-        //on pressing Authentication radio button opens up Textview with username and password
-
-
         this.refreshButtons();
 
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -161,6 +154,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private void refreshButtons() {
         startbrokerbtn.setEnabled( !MyBackgroundService.isRunning() );
         stopbrokerbtn.setEnabled( MyBackgroundService.isRunning() );
+        subbtn.setEnabled(MyBackgroundService.isRunning());
     }
 
     @Override

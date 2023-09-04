@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/saveBtnMqtt"
+        android:id="@+id/doneBtnMqtt"
         android:layout_width="151dp"
 
         android:layout_height="60dp"
@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.48" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/textStatus"
         android:layout_width="367dp"
         android:layout_height="36dp"
         android:text="mqtt"
@@ -78,7 +78,7 @@
         android:layout_marginTop="80dp"
         android:text="Publish"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintBottom_toTopOf="@+id/scrollViewId"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.881"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
         app:layout_constraintVertical_bias="0.035" />
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/scrollViewId"
         android:layout_width="370dp"
         android:layout_height="326dp"
         android:background="@color/black"
@@ -118,7 +118,7 @@
         android:layout_height="70dp"
         android:text="Connect"
         android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintBottom_toTopOf="@+id/scrollViewId"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"

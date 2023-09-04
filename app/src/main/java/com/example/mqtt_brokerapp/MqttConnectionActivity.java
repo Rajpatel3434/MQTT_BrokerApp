@@ -6,15 +6,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,24 +50,18 @@ public class MqttConnectionActivity extends AppCompatActivity {
 
     private static final String TAG = "MyTag";
 
-    private Button btnPublish, btnSubscribe;
+    private Button btnPublish, btnSubscribe, btnDone;
     private Switch switchConnect;
     private MqttAndroidClient mqttAndroidClient;
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
-
-//    String serverURL = "ssl://broker.hivemq.com:8883";
-    //    String serverURL = "tcp://broker.hivemq.com:1883";
 
     AppConfig appConfig = AppConfig.getInstance();
     String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
     String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
 
     String topic = appConfig.getTopicName();
-//    String topic = "mqttHQ-client-test";
     String clientId = appConfig.getClientName();
-//    String clientId = "xyz";
-
     String username = appConfig.getUserNameTxt();
     String password = appConfig.getPasswordTxt();
 
@@ -102,11 +92,10 @@ public class MqttConnectionActivity extends AppCompatActivity {
         switchConnect = findViewById(R.id.btn_connect);
 
         switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                boolean authState = appConfig.getAuthNoAuthState();
                 boolean sslState = appConfig.getSslState();
 // authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)
                 if (isChecked) {
@@ -135,7 +124,7 @@ public class MqttConnectionActivity extends AppCompatActivity {
         });
 
         tvMsg = findViewById(R.id.tv_msg);
-        tvStatus = findViewById(R.id.text);
+        tvStatus = findViewById(R.id.textStatus);
 
         inputMsg = findViewById(R.id.edt_input);
 
@@ -146,6 +135,51 @@ public class MqttConnectionActivity extends AppCompatActivity {
                 publish();
             }
         });
+        tvMsg = findViewById(R.id.tv_msg);
+        tvStatus = findViewById(R.id.textStatus);
+        btnDone = findViewById(R.id.doneBtnMqtt);
+
+
+        final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String savedtextStatus = sharedPreferences.getString("textStatus","");
+        String savedtvMsg = sharedPreferences.getString("tvMsg","");
+        boolean savedBtnConnectState = sharedPreferences.getBoolean("btnConnect",false);
+        boolean savedBtnSubscribeState = sharedPreferences.getBoolean("btnSubscribe", false);
+        boolean savedBtnPublishState = sharedPreferences.getBoolean("btnPublish", false);
+
+
+        tvStatus.setText(savedtextStatus);
+        tvMsg.setText(savedtvMsg);
+        switchConnect.setChecked(savedBtnConnectState);
+        btnSubscribe.setActivated(savedBtnSubscribeState);
+        btnPublish.setActivated(savedBtnPublishState);
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String textStatus = tvStatus.getText().toString();
+                String textMsg = tvMsg.getText().toString();
+                boolean btnConnect = switchConnect.isChecked();
+                boolean btnSubscribed = btnSubscribe.isActivated();
+                boolean btnPublished = btnPublish.isActivated();
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("textStatus",textStatus); // working
+                editor.putString("textMsg",textMsg); // not working
+                editor.putBoolean("btnConnect",btnConnect); // connect working
+                editor.putBoolean("btnSubscribe",btnSubscribed); // subscribe working
+                editor.putBoolean("btnPublish",btnPublished); // publish working
+                editor.apply();
+                launchDashboardActivity();
+                finish();
+
+            }
+        });
+
+    }
+    private void launchDashboardActivity() {
+        Intent intent = new Intent(this, MainActivity2.class);
+        startActivity(intent);
+        finish();
     }
 
     private String messages = null;

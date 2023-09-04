@@ -71,13 +71,14 @@
         android:layout_width="134dp"
 
         android:layout_height="57dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/button_nukon"
         android:text="Save"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
         app:layout_constraintVertical_bias="0.869" />
