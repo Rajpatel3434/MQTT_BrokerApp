@@ -1,6 +1,8 @@
 package com.example.mqtt_brokerapp;
 
 
+import static android.view.View.GONE;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +57,7 @@ public class MqttDriverActivity extends AppCompatActivity {
     private MqttAndroidClient mqttAndroidClient;
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
+    private ImageView connectImg, disconnectImg;
 
     AppConfig appConfig = AppConfig.getInstance();
     String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
@@ -189,6 +193,10 @@ public class MqttDriverActivity extends AppCompatActivity {
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
 
+        connectImg = findViewById(R.id.connectedImageView);
+        disconnectImg = findViewById(R.id.disconnectedImageView);
+        connectImg.setVisibility(View.GONE);
+        disconnectImg.setVisibility(View.GONE);
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
         mqttAndroidClient.setCallback(new MqttCallback() {
@@ -233,6 +241,7 @@ public class MqttDriverActivity extends AppCompatActivity {
                     Toast.makeText(MqttDriverActivity.this, "Connected Successfully!", Toast.LENGTH_SHORT).show();
                     tvStatus.setText("Connection Sucessful!");
                     switchConnect.setChecked(true);
+                    connectImg.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -241,6 +250,7 @@ public class MqttDriverActivity extends AppCompatActivity {
                     tvStatus.setText("Connection Failed!");
                     Log.e(TAG, "connect onFailure: " );
                     switchConnect.setChecked(false);
+                    disconnectImg.setVisibility(View.VISIBLE);
 
                 }
             });
@@ -312,6 +322,8 @@ public class MqttDriverActivity extends AppCompatActivity {
                     public void onSuccess(IMqttToken asyncActionToken) {
                         switchConnect.setActivated(true);
                         tvStatus.setText("Connection Unsuccessful!");
+                        connectImg.setVisibility(View.GONE);
+                        disconnectImg.setVisibility(View.VISIBLE);
                     }
 
                     @Override
