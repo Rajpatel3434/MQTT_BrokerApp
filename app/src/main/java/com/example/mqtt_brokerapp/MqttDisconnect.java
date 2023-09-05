@@ -11,7 +11,7 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.w3c.dom.Text;
 
-public class MqttDisconnect {
+public class MqttDisconnect extends MqttDriverActivity{
     private MqttAndroidClient mqttAndroidClient;
     public MqttDisconnect(MqttAndroidClient mqttAndroidClient) {
         this.mqttAndroidClient = mqttAndroidClient;

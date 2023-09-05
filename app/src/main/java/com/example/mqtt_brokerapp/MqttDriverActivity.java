@@ -64,14 +64,14 @@ public class MqttDriverActivity extends AppCompatActivity {
     private EditText inputMsg;
     private ImageView connectImg, disconnectImg;
 
-    AppConfig appConfig = AppConfig.getInstance();
-    String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
-    String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
+    private AppConfig appConfig = AppConfig.getInstance();
+    private String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
+    private String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
 
-    String topic = appConfig.getTopicName();
-    String clientId = appConfig.getClientName();
-    String username = appConfig.getUserNameTxt();
-    String password = appConfig.getPasswordTxt();
+    private String topic = appConfig.getTopicName();
+    private String clientId = appConfig.getClientName();
+    private String username = appConfig.getUserNameTxt();
+    private String password = appConfig.getPasswordTxt();
 
     private int selectedQoS = 0;
     private boolean isRetained = false;
@@ -108,7 +108,6 @@ public class MqttDriverActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 boolean sslState = appConfig.getSslState();
-// authState && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
                     if (sslState){
@@ -217,6 +216,11 @@ public class MqttDriverActivity extends AppCompatActivity {
                 }
             }
         });
+
+        connectImg = findViewById(R.id.connectedImageView);
+        disconnectImg = findViewById(R.id.disconnectedImageView);
+        connectImg.setVisibility(View.GONE);
+        disconnectImg.setVisibility(View.GONE);
 
     }
     private int extractQoSValue(String qosString) {
