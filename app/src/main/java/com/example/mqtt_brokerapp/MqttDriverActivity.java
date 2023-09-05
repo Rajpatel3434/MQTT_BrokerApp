@@ -55,7 +55,7 @@ import javax.net.ssl.TrustManagerFactory;
 public class MqttDriverActivity extends AppCompatActivity {
 
 
-    private static final String TAG = "MyTag";
+    static final String TAG = "MyTag";
 
     private Button btnPublish, btnSubscribe, btnDone;
     private Switch switchConnect, switchRetained;
@@ -99,6 +99,7 @@ public class MqttDriverActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "MyPrefs";
     private void init() {
 
+
         switchConnect = findViewById(R.id.btn_connect);
 
         switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -118,7 +119,8 @@ public class MqttDriverActivity extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(MqttDriverActivity.this, "Disconnected...", Toast.LENGTH_SHORT).show();
-                    disconnectX();
+                    MqttDisconnect mqttDisconnect = new MqttDisconnect(mqttAndroidClient);
+                    mqttDisconnect.disconnectX(switchConnect,tvStatus,connectImg,disconnectImg);
                 }
             }
         });
@@ -129,7 +131,8 @@ public class MqttDriverActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "onClick: subscribe");
-                subscribe();
+                MqttSubscribe mqttSubscribe = new MqttSubscribe(mqttAndroidClient);
+                mqttSubscribe.subscribe(topic,selectedQoS,tvStatus);
             }
         });
 
@@ -142,7 +145,8 @@ public class MqttDriverActivity extends AppCompatActivity {
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                publish();
+                MqttPublish mqttPublish = new MqttPublish(mqttAndroidClient);
+                mqttPublish.publish(selectedQoS,topic,isRetained,inputMsg,tvStatus);
             }
         });
         tvMsg = findViewById(R.id.tv_msg);
@@ -260,7 +264,7 @@ public class MqttDriverActivity extends AppCompatActivity {
 
                 Log.e(TAG, "messageArrived: " + topic + ":" + message.toString());
 
-                String msg = "time: " + time + "\r\n" + "topic: " + topic + "\r\n" + "message: " + message.toString();
+                String msg = "time: " + time + "\r\n" + "topic: " + "\r\n" + "QoS: " + selectedQoS + "\r\n" + "message: " + message.toString();
                 messages = messages == null ? msg : messages + "\n" + msg;
 
                 tvMsg.setText(messages);
@@ -361,81 +365,6 @@ public class MqttDriverActivity extends AppCompatActivity {
         connectCommon(serverURLSSL,username,password);
 
     }
-
-    private void disconnectX () {
-            try {
-                IMqttToken disconToken = mqttAndroidClient.disconnect();
-                disconToken.setActionCallback(new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        switchConnect.setActivated(true);
-                        tvStatus.setText("Connection Unsuccessful!");
-                        connectImg.setVisibility(View.GONE);
-                        disconnectImg.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken,
-                                          Throwable exception) {
-
-                    }
-                });
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void publish() {
-            MqttMessage message = new MqttMessage();
-            message.setQos(selectedQoS);
-
-            message.setRetained(isRetained);
-            String msg = inputMsg.getText().toString();
-            message.setPayload((msg).getBytes());
-            try {
-                mqttAndroidClient.publish(topic, message, null, new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-
-                        tvStatus.setText("Message Published!" );
-                    }
-
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        tvStatus.setText("Message Failed!");
-                        Log.e(TAG, "onFailure: ");
-
-                    }
-                });
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-
-        public void subscribe() {
-
-            try {
-                mqttAndroidClient.subscribe(topic, selectedQoS, null, new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-
-                        Log.e(TAG, "onSuccess: " + asyncActionToken.getClient().getClientId());
-                        tvStatus.setText("Subscription Successful!");
-                    }
-
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-
-                        tvStatus.setText("Subscription Failed!");
-                    }
-                });
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-        }
 
 
     @Override
