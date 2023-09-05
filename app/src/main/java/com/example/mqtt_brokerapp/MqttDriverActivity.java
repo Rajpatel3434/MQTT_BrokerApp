@@ -43,6 +43,10 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -54,7 +58,7 @@ public class MqttDriverActivity extends AppCompatActivity {
     private static final String TAG = "MyTag";
 
     private Button btnPublish, btnSubscribe, btnDone;
-    private Switch switchConnect;
+    private Switch switchConnect, switchRetained;
     private MqttAndroidClient mqttAndroidClient;
     private TextView tvMsg, tvStatus;
     private EditText inputMsg;
@@ -70,6 +74,7 @@ public class MqttDriverActivity extends AppCompatActivity {
     String password = appConfig.getPasswordTxt();
 
     private int selectedQoS = 0;
+    private boolean isRetained = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +202,18 @@ public class MqttDriverActivity extends AppCompatActivity {
             }
         });
 
+        switchRetained = findViewById(R.id.retainSwitchId);
+        switchRetained.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    isRetained = true;
+                } else{
+                    isRetained = false;
+                }
+            }
+        });
+
     }
     private int extractQoSValue(String qosString) {
         switch (qosString) {
@@ -239,7 +256,7 @@ public class MqttDriverActivity extends AppCompatActivity {
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
 
-                String time = System.currentTimeMillis() + "";
+                String time = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 
                 Log.e(TAG, "messageArrived: " + topic + ":" + message.toString());
 
@@ -368,9 +385,40 @@ public class MqttDriverActivity extends AppCompatActivity {
             }
         }
 
-        private void subscribe() {
+        public void publish() {
+            MqttMessage message = new MqttMessage();
+            message.setQos(selectedQoS);
+
+            message.setRetained(isRetained);
+            String msg = inputMsg.getText().toString();
+            message.setPayload((msg).getBytes());
             try {
-                mqttAndroidClient.subscribe(topic, 0, null, new IMqttActionListener() {
+                mqttAndroidClient.publish(topic, message, null, new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+
+                        tvStatus.setText("Message Published!" );
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        tvStatus.setText("Message Failed!");
+                        Log.e(TAG, "onFailure: ");
+
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+        public void subscribe() {
+
+            try {
+                mqttAndroidClient.subscribe(topic, selectedQoS, null, new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
 
@@ -387,35 +435,9 @@ public class MqttDriverActivity extends AppCompatActivity {
             } catch (MqttException e) {
                 e.printStackTrace();
             }
-    }
-
-    private void publish() {
-        MqttMessage message = new MqttMessage();
-        message.setQos(selectedQoS);
-
-        message.setRetained(false);
-        String msg = inputMsg.getText().toString();
-        message.setPayload((msg).getBytes());
-        try {
-            mqttAndroidClient.publish(topic, message, null, new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-
-                    tvStatus.setText("Message Published!");
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    tvStatus.setText("Message Failed!");
-                    Log.e(TAG, "onFailure: ");
-
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
         }
 
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
