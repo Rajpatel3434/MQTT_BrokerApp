@@ -21,7 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Switch switchSSL, switchAuthNoAuth;
     private RadioButton crtRadioBtn;
-    private ConstraintLayout authCL;
+    private ConstraintLayout authCL, crtCL;
     private EditText editTextIP, editTextPort, editUserTxt, editPasswordTxt, editTopicTxt, editClientTxt;
     private Button saveBtn;
 
@@ -157,6 +157,20 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }else {
                     crtRadioBtn.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        crtCL = findViewById(R.id.certficateConstraintLayout);
+        crtCL.setVisibility(View.GONE);
+        crtRadioBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (crtCL.getVisibility() == View.GONE){
+                    crtCL.setVisibility(View.VISIBLE);
+                } else if (crtCL.getVisibility() == View.VISIBLE){
+                    crtCL.setVisibility(View.GONE);
+                    crtRadioBtn.setChecked(false);
                 }
             }
         });
