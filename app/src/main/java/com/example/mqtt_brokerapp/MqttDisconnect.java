@@ -1,5 +1,6 @@
 package com.example.mqtt_brokerapp;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -13,7 +14,9 @@ import org.w3c.dom.Text;
 
 public class MqttDisconnect extends MqttDriverActivity{
     private MqttAndroidClient mqttAndroidClient;
+    private Context context;
     public MqttDisconnect(MqttAndroidClient mqttAndroidClient) {
+        super();
         this.mqttAndroidClient = mqttAndroidClient;
     }
     public void disconnectX(Switch switchConnect, TextView tvStatus, ImageView connectImg, ImageView disconnectImg) {

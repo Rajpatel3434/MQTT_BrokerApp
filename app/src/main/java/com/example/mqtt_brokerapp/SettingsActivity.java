@@ -1,21 +1,28 @@
 package com.example.mqtt_brokerapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.InputStream;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -24,7 +31,8 @@ public class SettingsActivity extends AppCompatActivity {
     private ConstraintLayout authCL, crtCL;
     private EditText editTextIP, editTextPort, editUserTxt, editPasswordTxt, editTopicTxt, editClientTxt;
     private Button saveBtn;
-
+    TextView caFileTv;
+    TextView clientFileTv;
 
     private static final String PREFS_NAME = "MyPrefs";
 
@@ -60,12 +68,14 @@ public class SettingsActivity extends AppCompatActivity {
         String savedPassword = sharedPreferences.getString("passwordTxtField", "");
         String savedTopic = sharedPreferences.getString("topicNameField","");
         String savedClient = sharedPreferences.getString("clientNameField","");
-        int savedPort = sharedPreferences.getInt("port",-1);
+//        int savedPort = sharedPreferences.getInt("port",-1);
+//        String savedPort = sharedPreferences.getString("port","");
+
         boolean savedSslState = sharedPreferences.getBoolean("sslState", false);
         boolean savedauthNoAuthState = sharedPreferences.getBoolean("authNoAuthState", false);
 
         editTextIP.setText(savedIP);
-        editTextPort.setText(savedPort != -1 ? String.valueOf(savedPort) : "");
+//        editTextPort.setText(savedPort);
         editUserTxt.setText(savedUsername);
         editPasswordTxt.setText(savedPassword);
         editTopicTxt.setText(savedTopic);
@@ -91,7 +101,20 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 else{
                     if (isNumeric(portStr) ){
-                        int port = Integer.parseInt(portStr);
+                        int port = Integer.parseInt(editTextPort.getText().toString());
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("port",portStr);
+                        editor.putString("ipAdress",ipAddress);
+                        editor.putString("usrnameTxtField",usrnameTxtField);
+                        editor.putString("passwordTxtField",passwordTxtField);
+                        editor.putString("topicNameField",topicNameField);
+                        editor.putString("clientNameField",clientNameField);
+                        editor.putBoolean("sslState",sslState);
+                        editor.putBoolean("authNoAuthState",authNoAuthState);
+                        editor.putInt("port",port);
+
+
+                        editor.apply();
                         appConfig.setIpAddress(ipAddress);
                         appConfig.setPort(port);
                         appConfig.setTopicName(topicNameField);
@@ -125,7 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
 
-    private void init(){
+    private void init() {
         authCL = findViewById(R.id.authConstraintlayout);
         authCL.setVisibility(View.GONE);
 
@@ -134,11 +157,11 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if (authCL.getVisibility() == View.GONE){
+                    if (authCL.getVisibility() == View.GONE) {
                         authCL.setVisibility(View.VISIBLE);
                     }
 
-                } else{
+                } else {
                     authCL.setVisibility(View.GONE);
                 }
             }
@@ -151,11 +174,11 @@ public class SettingsActivity extends AppCompatActivity {
         switchSSL.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    if (crtRadioBtn.getVisibility() == View.GONE){
+                if (isChecked) {
+                    if (crtRadioBtn.getVisibility() == View.GONE) {
                         crtRadioBtn.setVisibility(View.VISIBLE);
                     }
-                }else {
+                } else {
                     crtRadioBtn.setVisibility(View.GONE);
                 }
             }
@@ -166,14 +189,128 @@ public class SettingsActivity extends AppCompatActivity {
         crtRadioBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (crtCL.getVisibility() == View.GONE){
+                if (crtCL.getVisibility() == View.GONE) {
                     crtCL.setVisibility(View.VISIBLE);
-                } else if (crtCL.getVisibility() == View.VISIBLE){
+                } else if (crtCL.getVisibility() == View.VISIBLE) {
                     crtCL.setVisibility(View.GONE);
                     crtRadioBtn.setChecked(false);
                 }
             }
         });
+
+        ImageButton caCrtBtn = findViewById(R.id.caFileBtn);
+        ImageButton clientCrtBtn = findViewById(R.id.clientFileBtn);
+         caFileTv = findViewById(R.id.caFileTextView);
+         clientFileTv = findViewById(R.id.clientFileTextView);
+
+        caCrtBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCaCrtFileChooser();
+
+            }
+        });
+        clientCrtBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showClientCrtFileChooser();
+            }
+        });
+    }
+
+    private void showCaCrtFileChooser(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a CA Certificate file"),101);
+        } catch (Exception e){
+            Toast.makeText(this, "You need a file manager!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void showClientCrtFileChooser(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a Client Certificate file"),102);
+        } catch (Exception e){
+            Toast.makeText(this, "You need a file manager!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode == 101 && resultCode == RESULT_OK && data !=null){
+            Uri caCertificateUri = data.getData();
+            String caCertpath = caCertificateUri.getPath();
+            File cafile = new File(caCertpath);
+            saveFileUriToSharedPreferences("caCertificateUri", caCertificateUri);
+
+            caFileTv.setText("CA cert " +cafile + " " + "File name: " + cafile.getName());
+            try {
+                // Open an InputStream for the selected CA certificate file
+                InputStream inputStream = getContentResolver().openInputStream(caCertificateUri);
+
+                // Now you can use the inputStream to read the content of the CA certificate file.
+                // For example, you can create a byte array to read the content:
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                StringBuilder content = new StringBuilder();
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    content.append(new String(buffer, 0, bytesRead));
+                }
+
+                // You can now use the 'content' StringBuilder to access the content of the CA certificate file.
+
+                // Don't forget to close the InputStream when you're done with it.
+                inputStream.close();
+
+            } catch (Exception e) {
+                // Handle any exceptions that may occur while reading the file.
+                e.printStackTrace();
+            }
+
+        } else if (requestCode == 102 && resultCode == RESULT_OK && data !=null){
+            Uri clientCertificateUri = data.getData();
+            String clientCertpath = clientCertificateUri.getPath();
+            File clientfile = new File(clientCertpath);
+            saveFileUriToSharedPreferences("clientCertificateUri", clientCertificateUri);
+            clientFileTv.setText("CA cert " +clientCertpath + " " + "File name: " + clientfile.getName());
+            try {
+                // Open an InputStream for the selected CA certificate file
+                InputStream inputStream = getContentResolver().openInputStream(clientCertificateUri);
+
+                // Now you can use the inputStream to read the content of the CA certificate file.
+                // For example, you can create a byte array to read the content:
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                StringBuilder content = new StringBuilder();
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    content.append(new String(buffer, 0, bytesRead));
+                }
+
+                // You can now use the 'content' StringBuilder to access the content of the CA certificate file.
+                // Don't forget to close the InputStream when you're done with it.
+                inputStream.close();
+
+            } catch (Exception e) {
+                // Handle any exceptions that may occur while reading the file.
+                e.printStackTrace();
+            }
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    // Helper method to save a file URI to SharedPreferences
+    private void saveFileUriToSharedPreferences(String key, Uri fileUri) {
+        SharedPreferences.Editor editor = getSharedPreferences("MyPrefs", MODE_PRIVATE).edit();
+        editor.putString(key, fileUri.toString());
+        editor.apply();
     }
 
     @Override

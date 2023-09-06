@@ -55,11 +55,11 @@ public class DashBoardActivity extends AppCompatActivity {
         String ipAddress = sharedPreferences.getString("ipAddress", "");
         ipAddTv.setText(ipAddress);
 
-        int portNumber = sharedPreferences.getInt("port", 0);
+        int portNumber = sharedPreferences.getInt("port", -1);
         portTextView = findViewById(R.id.portTextView);
 
         if (portNumber != 0) {
-            portTextView.setText(String.valueOf(portNumber));
+            portTextView.setText(portNumber != -1 ? String.valueOf(portNumber) : "");
         } else {
             portTextView.setText("");
         }

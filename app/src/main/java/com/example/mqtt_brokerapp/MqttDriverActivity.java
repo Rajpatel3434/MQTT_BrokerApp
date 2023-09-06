@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuCompat;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -39,6 +40,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.CertificateFactory;
@@ -75,6 +78,16 @@ public class MqttDriverActivity extends AppCompatActivity {
 
     private int selectedQoS = 0;
     private boolean isRetained = false;
+
+    private Context context;
+    public MqttDriverActivity(Context context){
+        this.context = context;
+    }
+
+    public MqttDriverActivity() {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -324,16 +337,21 @@ public class MqttDriverActivity extends AppCompatActivity {
         // SSL block
         try {
 
+            String caCertificateUriString = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("caCertificateUri", null);
+            String clientCertificateUriString = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).getString("clientCertificateUri", null);
+
             MemoryPersistence persistence = new MemoryPersistence();
             MqttClient mqttClient = new MqttClient(serverURLSSL, clientId, persistence);
 
             // Load CA certificate from raw resources
-            InputStream caInputStream = getResources().openRawResource(R.raw.ca);
+//            InputStream caInputStream = getResources().openRawResource(R.raw.ca);
+            InputStream caInputStream = new FileInputStream(caCertificateUriString);
             CertificateFactory caCertFactory = CertificateFactory.getInstance("X.509");
             X509Certificate caCert = (X509Certificate) caCertFactory.generateCertificate(caInputStream);
 
             // Load client certificate from raw resources
-            InputStream clientCertInputStream = getResources().openRawResource(R.raw.clientpem);
+//            InputStream clientCertInputStream = getResources().openRawResource(R.raw.clientpem);
+            InputStream clientCertInputStream = new FileInputStream(clientCertificateUriString);
             CertificateFactory clientCertFactory = CertificateFactory.getInstance("X.509");
             X509Certificate clientCert = (X509Certificate) clientCertFactory.generateCertificate(clientCertInputStream);
 
