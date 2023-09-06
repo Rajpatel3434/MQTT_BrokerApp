@@ -6,63 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/certficateConstraintLayout"
-        android:layout_width="376dp"
-        android:layout_height="43dp"
+    <TextView
+        android:id="@+id/clientFileTextView"
+        android:layout_width="188dp"
+        android:layout_height="22dp"
+        android:text="Client Certificate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintHorizontal_bias="0.887"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.537">
-
-        <TextView
-            android:id="@+id/clientFileTextView"
-            android:layout_width="188dp"
-            android:layout_height="22dp"
-            android:text="Client Certificate"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.977"
-            app:layout_constraintStart_toStartOf="@+id/caFileTextView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.476" />
-
-        <ImageButton
-            android:id="@+id/clientFileBtn"
-            android:layout_width="24dp"
-            android:layout_height="29dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.937"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_file_clip" />
-
-        <TextView
-            android:id="@+id/caFileTextView"
-            android:layout_width="163dp"
-            android:layout_height="21dp"
-            android:text="CA Certificate"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.054"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/caFileBtn"
-            android:layout_width="24dp"
-            android:layout_height="29dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.372"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_file_clip" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.535" />
 
     <EditText
         android:id="@+id/clientEditTextStngs"
@@ -306,6 +260,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SSLSwitchBtn"
         app:layout_constraintVertical_bias="0.16" />
+
+    <TextView
+        android:id="@+id/caFileTextView"
+        android:layout_width="163dp"
+        android:layout_height="21dp"
+        android:text="CA Certificate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.534" />
+
+    <ImageButton
+        android:id="@+id/caFileBtn"
+        android:layout_width="24dp"
+        android:layout_height="29dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.405"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.538"
+        app:srcCompat="@drawable/ic_file_clip" />
+
+    <ImageButton
+        android:id="@+id/clientFileBtn"
+        android:layout_width="24dp"
+        android:layout_height="29dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.935"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.538"
+        app:srcCompat="@drawable/ic_file_clip" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
