@@ -68,14 +68,14 @@ public class SettingsActivity extends AppCompatActivity {
         String savedPassword = sharedPreferences.getString("passwordTxtField", "");
         String savedTopic = sharedPreferences.getString("topicNameField","");
         String savedClient = sharedPreferences.getString("clientNameField","");
-//        int savedPort = sharedPreferences.getInt("port",-1);
+        int savedPort = sharedPreferences.getInt("port",-1);
 //        String savedPort = sharedPreferences.getString("port","");
 
         boolean savedSslState = sharedPreferences.getBoolean("sslState", false);
         boolean savedauthNoAuthState = sharedPreferences.getBoolean("authNoAuthState", false);
 
         editTextIP.setText(savedIP);
-//        editTextPort.setText(savedPort);
+        editTextPort.setText((savedPort != -1 ? String.valueOf(savedPort) : ""));
         editUserTxt.setText(savedUsername);
         editPasswordTxt.setText(savedPassword);
         editTopicTxt.setText(savedTopic);
@@ -104,14 +104,15 @@ public class SettingsActivity extends AppCompatActivity {
                         int port = Integer.parseInt(editTextPort.getText().toString());
                         SharedPreferences.Editor editor = sharedPreferences.edit();
 //                        editor.putString("port",portStr);
-                        editor.putString("ipAdress",ipAddress);
+                        editor.putString("ipAddress",ipAddress);
+                        editor.putInt("port",port);
                         editor.putString("usrnameTxtField",usrnameTxtField);
                         editor.putString("passwordTxtField",passwordTxtField);
                         editor.putString("topicNameField",topicNameField);
                         editor.putString("clientNameField",clientNameField);
                         editor.putBoolean("sslState",sslState);
                         editor.putBoolean("authNoAuthState",authNoAuthState);
-                        editor.putInt("port",port);
+
 
 
                         editor.apply();
