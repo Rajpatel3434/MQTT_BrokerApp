@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( MainActivity.this, DashBoardActivity.class);
+                Intent intent = new Intent( MainActivity.this, BrokersListActivity.class);
                 if (!permission_post_notifications){
                     requestPermissionNotification();
 

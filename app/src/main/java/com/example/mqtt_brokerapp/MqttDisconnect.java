@@ -14,7 +14,7 @@ import org.w3c.dom.Text;
 
 public class MqttDisconnect extends MqttDriverActivity{
     private MqttAndroidClient mqttAndroidClient;
-    private Context context;
+
     public MqttDisconnect(MqttAndroidClient mqttAndroidClient) {
         super();
         this.mqttAndroidClient = mqttAndroidClient;

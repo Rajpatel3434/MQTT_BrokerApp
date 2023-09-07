@@ -5,12 +5,13 @@ import java.io.Serializable;
 public class AppConfig implements Serializable {
     private static AppConfig instance;
 
-    private String ipAddress, topicName, clientName, userNameTxt, passwordTxt;
+    private String ipAddress, topicName, clientName, userNameTxt, passwordTxt, brokerName;
     private boolean authNoAuthState, sslState;
     private int port;
 
     AppConfig() {
     }
+
 
     public static synchronized AppConfig getInstance() {
         if (instance == null) {
@@ -59,4 +60,12 @@ public class AppConfig implements Serializable {
 
     public void setSslState(boolean sslState){this.sslState = sslState;}
     public boolean getSslState(){return sslState;}
+
+    public String getBrokerName() {
+        return brokerName;
+    }
+
+    public void setBrokerName(String brokerName) {
+        this.brokerName = brokerName;
+    }
 }

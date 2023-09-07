@@ -22,6 +22,9 @@
         android:theme="@style/Theme.MQTT_BrokerApp"
         tools:targetApi="30">
         <activity
+            android:name=".BrokersListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MqttConnectionManager"
             android:exported="false" />
 

@@ -27,7 +27,7 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("APP", "OnCreate");
+        Log.d("APP","OnCreate");
 
         // Background service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
