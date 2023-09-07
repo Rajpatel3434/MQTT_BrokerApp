@@ -17,6 +17,7 @@ public class MqttPublish extends MqttDriverActivity{
 
     private MqttAndroidClient mqttAndroidClient;
     public MqttPublish(MqttAndroidClient mqttAndroidClient) {
+        super();
         this.mqttAndroidClient = mqttAndroidClient;
     }
     public void publish( int selectedQoS, String topic, boolean isRetained, EditText inputMsg, TextView tvStatus) {

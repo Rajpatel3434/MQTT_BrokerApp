@@ -27,12 +27,12 @@ import java.io.InputStream;
 public class SettingsActivity extends AppCompatActivity {
 
     private Switch switchSSL, switchAuthNoAuth;
-    private RadioButton crtRadioBtn;
     private ConstraintLayout authCL, crtCL;
     private EditText editTextIP, editTextPort, editUserTxt, editPasswordTxt, editTopicTxt, editClientTxt;
     private Button saveBtn;
-    TextView caFileTv;
-    TextView clientFileTv;
+    private ImageButton caCrtBtn, clientCrtBtn;
+    private TextView caFileTv;
+    private TextView clientFileTv;
 
     private static final String PREFS_NAME = "MyPrefs";
 
@@ -49,7 +49,12 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        init();
+         caCrtBtn = findViewById(R.id.caFileBtn);
+         clientCrtBtn = findViewById(R.id.clientFileBtn);
+        caFileTv = findViewById(R.id.caFileTextView);
+        clientFileTv = findViewById(R.id.clientFileTextView);
+        crtCL = findViewById(R.id.certficateConstraintLayout);
+
         //getting instances ID and assigning
         editTextIP = findViewById(R.id.IPEditTextStngs);
         editTextPort = findViewById(R.id.PortTextStngs);
@@ -61,6 +66,8 @@ public class SettingsActivity extends AppCompatActivity {
         switchAuthNoAuth = findViewById(R.id.AuthSwitchBtnSetngs);
         saveBtn = findViewById(R.id.SaveBtnStngs);
 
+        init();
+
         final AppConfig appConfig = AppConfig.getInstance();
         final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String savedIP = sharedPreferences.getString("ipAddress","");
@@ -69,10 +76,9 @@ public class SettingsActivity extends AppCompatActivity {
         String savedTopic = sharedPreferences.getString("topicNameField","");
         String savedClient = sharedPreferences.getString("clientNameField","");
         int savedPort = sharedPreferences.getInt("port",-1);
-//        String savedPort = sharedPreferences.getString("port","");
-
         boolean savedSslState = sharedPreferences.getBoolean("sslState", false);
         boolean savedauthNoAuthState = sharedPreferences.getBoolean("authNoAuthState", false);
+
 
         editTextIP.setText(savedIP);
         editTextPort.setText((savedPort != -1 ? String.valueOf(savedPort) : ""));
@@ -82,6 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
         editClientTxt.setText(savedClient);
         switchSSL.setChecked(savedSslState);
         switchAuthNoAuth.setChecked(savedauthNoAuthState);
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,15 +102,17 @@ public class SettingsActivity extends AppCompatActivity {
                 boolean sslState = switchSSL.isChecked();
                 boolean authNoAuthState = switchAuthNoAuth.isChecked();
 
-                if (portStr.isEmpty() || ipAddress.isEmpty() || (authNoAuthState && (usrnameTxtField.isEmpty() && passwordTxtField.isEmpty()))){
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+
+                if (portStr.isEmpty() || ipAddress.isEmpty() || topicNameField.isEmpty() || clientNameField.isEmpty()||(authNoAuthState && (usrnameTxtField.isEmpty() && passwordTxtField.isEmpty()))){
                     Toast.makeText(SettingsActivity.this, "Missing Values!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else{
                     if (isNumeric(portStr) ){
                         int port = Integer.parseInt(editTextPort.getText().toString());
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("port",portStr);
                         editor.putString("ipAddress",ipAddress);
                         editor.putInt("port",port);
                         editor.putString("usrnameTxtField",usrnameTxtField);
@@ -112,8 +121,6 @@ public class SettingsActivity extends AppCompatActivity {
                         editor.putString("clientNameField",clientNameField);
                         editor.putBoolean("sslState",sslState);
                         editor.putBoolean("authNoAuthState",authNoAuthState);
-
-
 
                         editor.apply();
                         appConfig.setIpAddress(ipAddress);
@@ -170,39 +177,22 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         switchSSL = findViewById(R.id.SSLSwitchBtn);
-        crtRadioBtn = findViewById(R.id.crtRadioBtn);
-        crtRadioBtn.setVisibility(View.GONE);
+
+        crtCL.setVisibility(View.GONE);
         switchSSL.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if (crtRadioBtn.getVisibility() == View.GONE) {
-                        crtRadioBtn.setVisibility(View.VISIBLE);
+                    if (crtCL.getVisibility() == View.GONE) {
+                        crtCL.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    crtRadioBtn.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        crtCL = findViewById(R.id.certficateConstraintLayout);
-        crtCL.setVisibility(View.GONE);
-        crtRadioBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (crtCL.getVisibility() == View.GONE) {
-                    crtCL.setVisibility(View.VISIBLE);
-                } else if (crtCL.getVisibility() == View.VISIBLE) {
                     crtCL.setVisibility(View.GONE);
-                    crtRadioBtn.setChecked(false);
                 }
             }
         });
 
-        ImageButton caCrtBtn = findViewById(R.id.caFileBtn);
-        ImageButton clientCrtBtn = findViewById(R.id.clientFileBtn);
-         caFileTv = findViewById(R.id.caFileTextView);
-         clientFileTv = findViewById(R.id.clientFileTextView);
+
 
         caCrtBtn.setOnClickListener(new View.OnClickListener() {
             @Override

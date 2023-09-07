@@ -356,7 +356,7 @@ public class MqttDriverActivity extends AppCompatActivity {
             X509Certificate clientCert = (X509Certificate) clientCertFactory.generateCertificate(clientCertInputStream);
 
             // Load client private key
-            InputStream keyInputStream = getResources().openRawResource(R.raw.clientkey);
+//            InputStream keyInputStream = getResources().openRawResource(R.raw.clientkey);
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(null, null);
             keyStore.setCertificateEntry("ca", caCert);
@@ -383,11 +383,8 @@ public class MqttDriverActivity extends AppCompatActivity {
         catch (Exception e) {
             e.printStackTrace();
         }
-
         connectCommon(serverURLSSL,username,password);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

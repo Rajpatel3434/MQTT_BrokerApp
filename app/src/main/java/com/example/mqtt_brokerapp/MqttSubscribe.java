@@ -14,6 +14,7 @@ public class MqttSubscribe extends MqttDriverActivity{
     private MqttAndroidClient mqttAndroidClient;
 
     public MqttSubscribe(MqttAndroidClient mqttAndroidClient) {
+        super();
         this.mqttAndroidClient = mqttAndroidClient;
     }
     public void subscribe(String topic, int selectedQoS, TextView tvStatus) {

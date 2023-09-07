@@ -43,6 +43,9 @@ public class DashBoardActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+
+
         setInstances();
         refreshButtons();
     }
@@ -117,7 +120,6 @@ public class DashBoardActivity extends AppCompatActivity {
         } else {
             startService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
         }
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         startBrokerBtn.setEnabled(false);
         stopBrokerBtn.setEnabled(true);
         subBtn.setEnabled(true);
@@ -137,6 +139,9 @@ public class DashBoardActivity extends AppCompatActivity {
         startBrokerBtn.setEnabled(!MyBackgroundService.isRunning());
         stopBrokerBtn.setEnabled(MyBackgroundService.isRunning());
         subBtn.setEnabled(MyBackgroundService.isRunning());
+        String display = "mqtt> Server is started... ";
+        tView1.setText(display);
+        ipAdd.setText("mqtt> IP: " + Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
