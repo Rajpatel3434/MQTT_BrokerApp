@@ -1,5 +1,7 @@
 package com.example.mqtt_brokerapp;
 
+import static java.util.logging.Logger.global;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +18,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +79,8 @@ public class SettingsActivity extends AppCompatActivity {
         int savedPort = sharedPreferences.getInt("port",-1);
         boolean savedSslState = sharedPreferences.getBoolean("sslState", false);
         boolean savedauthNoAuthState = sharedPreferences.getBoolean("authNoAuthState", false);
+        String savedcaFileTv = sharedPreferences.getString("caFileTvField","CA Certificate");
+        String savedclientFileTv = sharedPreferences.getString("clientFileTvField","Client Certificate");
 
 
         editTextIP.setText(savedIP);
@@ -89,7 +92,8 @@ public class SettingsActivity extends AppCompatActivity {
         switchSSL.setChecked(savedSslState);
         switchAuthNoAuth.setChecked(savedauthNoAuthState);
 
-
+        caFileTv.setText(savedcaFileTv);
+        clientFileTv.setText(savedclientFileTv);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,8 +106,10 @@ public class SettingsActivity extends AppCompatActivity {
                 boolean sslState = switchSSL.isChecked();
                 boolean authNoAuthState = switchAuthNoAuth.isChecked();
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+                String caFileTvField = caFileTv.getText().toString();
+                String clientFileTvField = clientFileTv.getText().toString();
 
+                SharedPreferences.Editor editor = sharedPreferences.edit();
 
 
                 if (portStr.isEmpty() || ipAddress.isEmpty() || topicNameField.isEmpty() || clientNameField.isEmpty()||(authNoAuthState && (usrnameTxtField.isEmpty() && passwordTxtField.isEmpty()))){
@@ -121,7 +127,8 @@ public class SettingsActivity extends AppCompatActivity {
                         editor.putString("clientNameField",clientNameField);
                         editor.putBoolean("sslState",sslState);
                         editor.putBoolean("authNoAuthState",authNoAuthState);
-
+                        editor.putString("caFileTvField",caFileTvField);
+                        editor.putString("clientFileTvField",clientFileTvField);
                         editor.apply();
                         appConfig.setIpAddress(ipAddress);
                         appConfig.setPort(port);
@@ -269,7 +276,7 @@ public class SettingsActivity extends AppCompatActivity {
             String clientCertpath = clientCertificateUri.getPath();
             File clientfile = new File(clientCertpath);
             saveFileUriToSharedPreferences("clientCertificateUri", clientCertificateUri);
-            clientFileTv.setText("CA cert " +clientCertpath + " " + "File name: " + clientfile.getName());
+            clientFileTv.setText("Client cert " +clientCertpath + " " + "File name: " + clientfile.getName());
             try {
                 // Open an InputStream for the selected CA certificate file
                 InputStream inputStream = getContentResolver().openInputStream(clientCertificateUri);

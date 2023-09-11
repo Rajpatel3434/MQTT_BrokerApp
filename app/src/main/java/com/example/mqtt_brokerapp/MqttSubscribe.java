@@ -1,6 +1,8 @@
 package com.example.mqtt_brokerapp;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -17,7 +19,7 @@ public class MqttSubscribe extends MqttDriverActivity{
         super();
         this.mqttAndroidClient = mqttAndroidClient;
     }
-    public void subscribe(String topic, int selectedQoS, TextView tvStatus) {
+    public void subscribe(String topic, int selectedQoS, TextView tvStatus, ImageView connectImg, ImageView disconnectImg) {
 
         try {
             mqttAndroidClient.subscribe(topic, selectedQoS, null, new IMqttActionListener() {
@@ -26,12 +28,15 @@ public class MqttSubscribe extends MqttDriverActivity{
 
                     Log.e(TAG, "onSuccess: " + asyncActionToken.getClient().getClientId());
                     tvStatus.setText("Subscription Successful!");
+                    connectImg.setVisibility(View.VISIBLE);
+
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
                     tvStatus.setText("Subscription Failed!");
+                    disconnectImg.setVisibility(View.VISIBLE);
                 }
             });
         } catch (MqttException e) {

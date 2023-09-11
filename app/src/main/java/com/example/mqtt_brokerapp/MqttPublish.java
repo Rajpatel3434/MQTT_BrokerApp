@@ -3,7 +3,9 @@ package com.example.mqtt_brokerapp;
 import static com.example.mqtt_brokerapp.MqttDriverActivity.TAG;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -20,7 +22,7 @@ public class MqttPublish extends MqttDriverActivity{
         super();
         this.mqttAndroidClient = mqttAndroidClient;
     }
-    public void publish( int selectedQoS, String topic, boolean isRetained, EditText inputMsg, TextView tvStatus) {
+    public void publish(int selectedQoS, String topic, boolean isRetained, EditText inputMsg, TextView tvStatus, ImageView connectImg, ImageView disconnectImg) {
         MqttMessage message = new MqttMessage();
         message.setQos(selectedQoS);
 
@@ -34,12 +36,14 @@ public class MqttPublish extends MqttDriverActivity{
                 public void onSuccess(IMqttToken asyncActionToken) {
 
                     tvStatus.setText("Message Published!" );
+                    connectImg.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     tvStatus.setText("Message Failed!");
                     Log.e(TAG, "onFailure: ");
+                    disconnectImg.setVisibility(View.VISIBLE);
 
                 }
             });

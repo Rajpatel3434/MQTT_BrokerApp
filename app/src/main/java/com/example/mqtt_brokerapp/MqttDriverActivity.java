@@ -48,6 +48,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -144,7 +145,7 @@ public class MqttDriverActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e(TAG, "onClick: subscribe");
                 MqttSubscribe mqttSubscribe = new MqttSubscribe(mqttAndroidClient);
-                mqttSubscribe.subscribe(topic,selectedQoS,tvStatus);
+                mqttSubscribe.subscribe(topic,selectedQoS,tvStatus, connectImg, disconnectImg);
             }
         });
 
@@ -158,7 +159,7 @@ public class MqttDriverActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MqttPublish mqttPublish = new MqttPublish(mqttAndroidClient);
-                mqttPublish.publish(selectedQoS,topic,isRetained,inputMsg,tvStatus);
+                mqttPublish.publish(selectedQoS,topic,isRetained,inputMsg,tvStatus,connectImg,disconnectImg);
             }
         });
         tvMsg = findViewById(R.id.tv_msg);
@@ -167,7 +168,7 @@ public class MqttDriverActivity extends AppCompatActivity {
 
 
         final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String savedtextStatus = sharedPreferences.getString("textStatus","");
+        String savedtextStatus = sharedPreferences.getString("textStatus","MQTT Message Status");
         String savedtvMsg = sharedPreferences.getString("tvMsg","");
         boolean savedBtnConnectState = sharedPreferences.getBoolean("btnConnect",false);
         boolean savedBtnSubscribeState = sharedPreferences.getBoolean("btnSubscribe", false);
@@ -194,6 +195,7 @@ public class MqttDriverActivity extends AppCompatActivity {
                 editor.putBoolean("btnConnect",btnConnect);
                 editor.putBoolean("btnSubscribe",btnSubscribed);
                 editor.putBoolean("btnPublish",btnPublished);
+                editor.putString("tvMsg",textMsg);
                 editor.apply();
                 launchDashboardActivity();
                 finish();
