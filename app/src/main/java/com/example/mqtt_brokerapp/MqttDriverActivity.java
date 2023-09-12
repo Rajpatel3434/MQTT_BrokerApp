@@ -191,7 +191,7 @@ public class MqttDriverActivity extends AppCompatActivity {
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("textStatus",textStatus);
-                editor.putString("textMsg",textMsg);
+//
                 editor.putBoolean("btnConnect",btnConnect);
                 editor.putBoolean("btnSubscribe",btnSubscribed);
                 editor.putBoolean("btnPublish",btnPublished);

@@ -1,21 +1,31 @@
 package com.example.mqtt_brokerapp;
 
+import static com.example.mqtt_brokerapp.DashBoardActivity.PREFS_NAME;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class BrokersListActivity extends AppCompatActivity {
     private Button nextBtn;
+    private BrokerListAdapter brokerListAdapter;
+    private AppConfig appConfig = AppConfig.getInstance();
+    ArrayList<BrokerConfig> brokers = new ArrayList<>();
+    final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,28 +41,40 @@ public class BrokersListActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BrokersListActivity.this, DashBoardActivity.class);
+                Intent intent = new Intent(BrokersListActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });
 
-        ArrayList<AppConfig> brokerConfigList = new ArrayList<>();
-        ArrayAdapter<AppConfig> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, brokerConfigList);
 
         // Get a reference to your ListView from your XML layout
-        ListView listView = findViewById(R.id.brokerListView);
+        ListView brokerListView = findViewById(R.id.brokerListView);
 
-    // Set the adapter for your ListView
-        listView.setAdapter(adapter);
+        BrokerConfig broker = new BrokerConfig();
+        addBroker(broker);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        brokerListAdapter= new BrokerListAdapter(this, brokers);
+
+        // Set the adapter for your ListView
+        brokerListView.setAdapter(brokerListAdapter);
+        brokerListAdapter.notifyDataSetChanged();
+
+        brokerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AppConfig selectedBroker = brokerConfigList.get(position);
+
+
             }
         });
 
     }
 
 
+    // Add a broker
+    public void addBroker(BrokerConfig brokerConfig) {
+        brokers.add(brokerConfig);
+    }
+
 }
+

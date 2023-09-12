@@ -22,7 +22,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private Button stopBrokerBtn, startBrokerBtn, subBtn;
     private TextView tView1, ipAdd, ipAddTv, portTextView, authTextView, connectionTypeTextView;
     private WifiManager wifiManager;
-    private static final String PREFS_NAME = "MyPrefs";
+    static final String PREFS_NAME = "MyPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

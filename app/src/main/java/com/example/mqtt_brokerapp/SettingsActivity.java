@@ -1,7 +1,5 @@
 package com.example.mqtt_brokerapp;
 
-import static java.util.logging.Logger.global;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -158,9 +156,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
     private void launchDashboardActivity() {
-        Intent intent = new Intent(this, MqttDriverActivity.class);
-        startActivity(intent);
-        finish();
+        onBackPressed();
     }
 
     private void init() {

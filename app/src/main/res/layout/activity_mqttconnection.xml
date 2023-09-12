@@ -5,23 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/clearBtnMqtt"
-        android:layout_width="151dp"
-
-        android:layout_height="60dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/button_nukon"
-        android:text="Clear"
-        android:textSize="21dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.811"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollViewId"
-        app:layout_constraintVertical_bias="0.764" />
-
     <ImageView
         android:id="@+id/connectedImageView"
         android:layout_width="52dp"
@@ -56,7 +39,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.169"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollViewId"
         app:layout_constraintVertical_bias="0.764" />
@@ -77,7 +59,6 @@
         android:id="@+id/textStatus"
         android:layout_width="367dp"
         android:layout_height="36dp"
-        android:text="mqtt"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.31"
