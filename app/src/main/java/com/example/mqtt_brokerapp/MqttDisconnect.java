@@ -20,25 +20,35 @@ public class MqttDisconnect extends MqttDriverActivity{
         this.mqttAndroidClient = mqttAndroidClient;
     }
     public void disconnectX(Switch switchConnect, TextView tvStatus, ImageView connectImg, ImageView disconnectImg) {
-        try {
-            IMqttToken disconToken = mqttAndroidClient.disconnect();
-            disconToken.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    switchConnect.setActivated(true);
-                    tvStatus.setText("Connection Unsuccessful!");
-                    connectImg.setVisibility(View.GONE);
-                    disconnectImg.setVisibility(View.VISIBLE);
-                }
 
-                @Override
-                public void onFailure(IMqttToken asyncActionToken,
-                                      Throwable exception) {
+        if (mqttAndroidClient != null) {
+            try {
+                IMqttToken disconToken = mqttAndroidClient.disconnect();
+                disconToken.setActionCallback(new IMqttActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+                        switchConnect.setActivated(true);
+                        tvStatus.setText("Connection Unsuccessful!");
+                        connectImg.setVisibility(View.GONE);
+                        disconnectImg.setVisibility(View.VISIBLE);
+                    }
 
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken,
+                                          Throwable exception) {
+
+                    }
+                });
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            // Handle the case where mqttAndroidClient is null (e.g., not connected)
+            tvStatus.setText("Not connected");
+            switchConnect.setChecked(false);
+        }
+
         }
     }
-}
+

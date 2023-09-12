@@ -131,7 +131,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void openSettingsActivity() {
-        Intent intent = new Intent(DashBoardActivity.this, SettingsActivity.class);
+        Intent intent = new Intent(DashBoardActivity.this, MqttDriverActivity.class);
         startActivity(intent);
     }
 
