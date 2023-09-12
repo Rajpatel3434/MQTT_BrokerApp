@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                     requestPermissionNotification();
 
                 }else {
-                    Toast.makeText(MainActivity.this, "Notifications will appear now...", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 }
             }

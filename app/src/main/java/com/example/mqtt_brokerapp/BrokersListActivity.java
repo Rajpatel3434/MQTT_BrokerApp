@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,7 +26,8 @@ public class BrokersListActivity extends AppCompatActivity {
     private BrokerListAdapter brokerListAdapter;
     private AppConfig appConfig = AppConfig.getInstance();
     ArrayList<BrokerConfig> brokers = new ArrayList<>();
-    final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//    final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+static final String PREFS_NAME = "MyPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class BrokersListActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BrokersListActivity.this, SettingsActivity.class);
+                Intent intent = new Intent(BrokersListActivity.this, DashBoardActivity.class);
                 startActivity(intent);
             }
         });
@@ -54,16 +56,23 @@ public class BrokersListActivity extends AppCompatActivity {
         addBroker(broker);
 
 
-        brokerListAdapter= new BrokerListAdapter(this, brokers);
+
+        brokerListAdapter= new BrokerListAdapter(this, 0,brokers,getSharedPreferences(PREFS_NAME,MODE_PRIVATE));
+
+        brokerListAdapter.notifyDataSetChanged();
+
+//        String savedText = preferences.getString("textViewText", "");
 
         // Set the adapter for your ListView
         brokerListView.setAdapter(brokerListAdapter);
-        brokerListAdapter.notifyDataSetChanged();
+
 
         brokerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Intent intent = new Intent(BrokersListActivity.this,DashBoardActivity.class);
+                startActivity(intent);
 
             }
         });
