@@ -4,7 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/border"
     tools:context=".SettingsActivity">
+
+    <Button
+        android:id="@+id/SaveBtnStngs"
+        android:layout_width="125dp"
+
+        android:layout_height="52dp"
+        android:background="@drawable/button_nukon"
+        android:paddingLeft="8dp"
+        android:paddingTop="0dp"
+
+        android:paddingBottom="0dp"
+        android:text="Save "
+        android:textAlignment="center"
+        android:textSize="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.961" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/certficateConstraintLayout"
@@ -123,23 +144,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.333" />
-
-    <Button
-        android:id="@+id/SaveBtnStngs"
-        android:layout_width="134dp"
-
-        android:layout_height="57dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/button_nukon"
-        android:text="Save"
-        android:textSize="21dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.869" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -293,6 +297,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SSLSwitchBtn"
         app:layout_constraintVertical_bias="0.16" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="28dp"
+        android:layout_height="33dp"
+        app:layout_constraintBottom_toBottomOf="@+id/SaveBtnStngs"
+        app:layout_constraintEnd_toEndOf="@+id/SaveBtnStngs"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toStartOf="@+id/SaveBtnStngs"
+        app:layout_constraintTop_toTopOf="@+id/SaveBtnStngs"
+        app:layout_constraintVertical_bias="0.535"
+        app:srcCompat="@drawable/ic_save" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/border"
     tools:context=".BrokersListActivity">
+
+    <Button
+        android:id="@+id/nextBtnBrokersList"
+        android:layout_width="125dp"
+
+        android:layout_height="52dp"
+        android:background="@drawable/button_nukon"
+        android:paddingLeft="8dp"
+        android:paddingTop="0dp"
+
+        android:paddingBottom="0dp"
+        android:text="Next"
+        android:textAlignment="center"
+        android:textSize="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.954" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -13,23 +34,9 @@
         android:background="@color/nukon_blue"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ToolbarTheme"
-        app:title="Brokers List"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-
-    <Button
-        android:id="@+id/nextBtnBrokersList"
-        android:layout_width="159dp"
-        android:layout_height="67dp"
-        android:background="@drawable/button_nukon"
-        android:text="Add"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.927" />
 
     <ListView
         android:id="@+id/brokerListView"
@@ -44,4 +51,16 @@
         android:divider="@color/nukon_blue"
         android:dividerHeight="1dp"
         />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="33dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/nextBtnBrokersList"
+        app:layout_constraintEnd_toEndOf="@+id/nextBtnBrokersList"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="@+id/nextBtnBrokersList"
+        app:layout_constraintTop_toTopOf="@+id/nextBtnBrokersList"
+        app:layout_constraintVertical_bias="0.535"
+        app:srcCompat="@drawable/ic_next" />
 </androidx.constraintlayout.widget.ConstraintLayout>

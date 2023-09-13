@@ -1,12 +1,13 @@
 package com.example.mqtt_brokerapp;
 
-import static com.example.mqtt_brokerapp.DashBoardActivity.PREFS_NAME;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -36,24 +37,25 @@ static final String PREFS_NAME = "MyPrefs";
         setSupportActionBar(myToolbar);
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
         nextBtn = findViewById(R.id.nextBtnBrokersList);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BrokersListActivity.this, DashBoardActivity.class);
+                Intent intent = new Intent(BrokersListActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });
 
-//
         // Get a reference to your ListView from your XML layout
         ListView brokerListView = findViewById(R.id.brokerListView);
 
         BrokerConfig broker = new BrokerConfig();
         addBroker(broker);
-
-
 
         brokerListAdapter= new BrokerListAdapter(this, 0,brokers,getSharedPreferences(PREFS_NAME,MODE_PRIVATE));
 
@@ -63,12 +65,20 @@ static final String PREFS_NAME = "MyPrefs";
         brokerListView.setAdapter(brokerListAdapter);
 
     }
-
-
     // Add a broker
     public void addBroker(BrokerConfig brokerConfig) {
         brokers.add(brokerConfig);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 

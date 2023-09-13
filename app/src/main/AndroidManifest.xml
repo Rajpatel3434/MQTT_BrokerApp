@@ -24,7 +24,7 @@
         <activity
             android:name=".BrokersListActivity"
             android:exported="false"
-            android:label="@string/Mqtt_connection_name"
+            android:label="@string/client_dashboard_name"
             android:windowSoftInputMode="adjustPan"
             />
 

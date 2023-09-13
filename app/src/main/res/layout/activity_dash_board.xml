@@ -4,54 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/border"
     tools:context=".DashBoardActivity">
 
     <Button
         android:id="@+id/brokerStartBtn"
-        android:layout_width="167dp"
-        android:layout_height="56dp"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
 
         android:layout_marginBottom="44dp"
         android:background="@drawable/button_nukon"
-        android:text="Start Broker"
+        android:paddingLeft="8dp"
+        android:text="Start"
+        android:textAlignment="center"
+
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.143"
-
+        app:layout_constraintHorizontal_bias="0.234"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintVertical_bias="0.902" />
 
     <Button
         android:id="@+id/brokerStopBtn"
-        android:layout_width="167dp"
-        android:layout_height="56dp"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
 
         android:layout_marginBottom="44dp"
         android:background="@drawable/button_nukon"
-        android:text="Stop Broker"
+        android:paddingLeft="8dp"
+        android:text="Stop"
+        android:textAlignment="center"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.872"
 
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.737"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintVertical_bias="0.902" />
 
     <Button
         android:id="@+id/subBtn"
-        android:layout_width="218dp"
+        android:layout_width="125dp"
 
-        android:layout_height="50dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/button_nukon"
-        android:text="Client Dashboard"
+        android:paddingLeft="8dp"
+        android:paddingTop="0dp"
+
+        android:paddingBottom="0dp"
+        android:text="Client "
+        android:textAlignment="center"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
@@ -86,6 +95,7 @@
         android:id="@+id/textView2"
         android:layout_width="375dp"
         android:layout_height="211dp"
+        android:background="@drawable/border"
         android:padding="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -93,7 +103,7 @@
         app:layout_constraintHorizontal_bias="0.361"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.182" />
+        app:layout_constraintVertical_bias="0.218" />
 
     <TextView
         android:id="@+id/hostTextView"
@@ -103,10 +113,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.039"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintVertical_bias="0.196" />
 
     <TextView
         android:id="@+id/connectionTypeTextView"
@@ -129,23 +139,23 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintHorizontal_bias="0.044"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.872" />
+        app:layout_constraintVertical_bias="0.896" />
 
     <TextView
         android:id="@+id/authTextView"
-        android:layout_width="114dp"
-        android:layout_height="24dp"
+        android:layout_width="95dp"
+        android:layout_height="26dp"
         android:ems="10"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.634"
+        app:layout_constraintHorizontal_bias="0.614"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/ipTv"
-        app:layout_constraintVertical_bias="0.514" />
+        app:layout_constraintVertical_bias="0.489" />
 
     <TextView
         android:id="@+id/authText"
@@ -155,17 +165,17 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.625" />
+        app:layout_constraintVertical_bias="0.656" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="381dp"
         android:layout_height="136dp"
         android:layout_marginTop="12dp"
-        android:background="@color/black"
+        android:background="@drawable/terminalborder"
         android:fadeScrollbars="false"
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
@@ -209,10 +219,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintHorizontal_bias="0.037"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.307" />
+        app:layout_constraintVertical_bias="0.371" />
 
     <TextView
         android:id="@+id/textView12"
@@ -221,6 +231,7 @@
         android:text="Server Status Log"
         android:textColorHighlight="#C59595"
         android:textColorHint="#E4E4E4"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -243,15 +254,50 @@
 
     <TextView
         android:id="@+id/portTextView"
-        android:layout_width="120dp"
-        android:layout_height="25dp"
+        android:layout_width="130dp"
+        android:layout_height="22dp"
         android:ems="10"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintHorizontal_bias="0.074"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/ipTv"
-        app:layout_constraintVertical_bias="0.173" />
+        app:layout_constraintVertical_bias="0.085" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/subBtn"
+        app:layout_constraintEnd_toEndOf="@+id/subBtn"
+        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintStart_toStartOf="@+id/subBtn"
+        app:layout_constraintTop_toTopOf="@+id/subBtn"
+        app:srcCompat="@drawable/baseline_dashboard_customize_24" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="25dp"
+        android:layout_height="23dp"
+        app:layout_constraintBottom_toBottomOf="@+id/brokerStartBtn"
+        app:layout_constraintEnd_toEndOf="@+id/brokerStartBtn"
+        app:layout_constraintHorizontal_bias="0.825"
+        app:layout_constraintStart_toStartOf="@+id/brokerStartBtn"
+        app:layout_constraintTop_toTopOf="@+id/brokerStartBtn"
+        app:layout_constraintVertical_bias="0.576"
+        app:srcCompat="@drawable/ic_start" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        app:layout_constraintBottom_toBottomOf="@+id/brokerStopBtn"
+        app:layout_constraintEnd_toEndOf="@+id/brokerStopBtn"
+        app:layout_constraintHorizontal_bias="0.841"
+        app:layout_constraintStart_toStartOf="@+id/brokerStopBtn"
+        app:layout_constraintTop_toTopOf="@+id/brokerStopBtn"
+        app:layout_constraintVertical_bias="0.571"
+        app:srcCompat="@drawable/ic_stop" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
