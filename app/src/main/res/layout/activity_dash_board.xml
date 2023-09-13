@@ -69,6 +69,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="418dp"
+        app:title="@string/dashboard_activity_name"
         android:layout_height="64dp"
         android:background="@color/nukon_blue"
         android:minHeight="?attr/actionBarSize"

@@ -55,12 +55,10 @@
         <activity
             android:name=".DashBoardActivity"
             android:exported="true"
-            android:label="@string/dashboard_activity_name"
             android:theme="@style/Theme.MQTT_BrokerApp"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.MAIN"  />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
