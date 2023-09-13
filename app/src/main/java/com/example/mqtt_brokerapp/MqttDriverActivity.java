@@ -108,6 +108,8 @@ public class MqttDriverActivity extends AppCompatActivity {
             startService(new Intent(MqttDriverActivity.this, MyBackgroundService.class));
         }
 
+        btnSubscribe.setEnabled(false);
+        btnPublish.setEnabled(false);
     }
 
     private static final String PREFS_NAME = "MyPrefs";
@@ -314,6 +316,8 @@ public class MqttDriverActivity extends AppCompatActivity {
                     tvStatus.setText("Connection Sucessful!");
                     switchConnect.setChecked(true);
                     connectImg.setVisibility(View.VISIBLE);
+                    btnSubscribe.setEnabled(true);
+                    btnPublish.setEnabled(true);
                 }
 
                 @Override
@@ -323,7 +327,8 @@ public class MqttDriverActivity extends AppCompatActivity {
                     Log.e(TAG, "connect onFailure: " );
                     switchConnect.setChecked(false);
                     disconnectImg.setVisibility(View.VISIBLE);
-
+                    btnSubscribe.setEnabled(false);
+                    btnPublish.setEnabled(false);
                 }
             });
         } catch (MqttException e) {
