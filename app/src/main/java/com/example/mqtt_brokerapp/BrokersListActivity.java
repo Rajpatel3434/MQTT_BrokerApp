@@ -6,19 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+
 
 
 public class BrokersListActivity extends AppCompatActivity {
@@ -61,21 +59,8 @@ static final String PREFS_NAME = "MyPrefs";
 
         brokerListAdapter.notifyDataSetChanged();
 
-//        String savedText = preferences.getString("textViewText", "");
-
         // Set the adapter for your ListView
         brokerListView.setAdapter(brokerListAdapter);
-
-
-        brokerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(BrokersListActivity.this,DashBoardActivity.class);
-                startActivity(intent);
-
-            }
-        });
 
     }
 

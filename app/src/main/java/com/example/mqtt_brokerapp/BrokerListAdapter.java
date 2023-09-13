@@ -34,7 +34,6 @@ public class BrokerListAdapter extends ArrayAdapter<BrokerConfig> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        BrokerConfig broker = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.broker_tile, parent, false);
@@ -43,8 +42,6 @@ public class BrokerListAdapter extends ArrayAdapter<BrokerConfig> {
             TextView textViewIpAddress = convertView.findViewById(R.id.tvIpAddress);
             Button editBtn = convertView.findViewById(R.id.btnEdit);
 
-//            textViewName.setText(broker.getHostName());
-//            textViewIpAddress.setText(broker.getIpAddress());
 
             String hostName = sharedPreferences.getString("clientNameField","");
             textViewName.setText("Client: "+hostName);
@@ -52,6 +49,7 @@ public class BrokerListAdapter extends ArrayAdapter<BrokerConfig> {
             String ipName = sharedPreferences.getString("ipAddress","");
             textViewIpAddress.setText("Host: "+ipName);
 
+            editBtn.setVisibility(View.VISIBLE);
             editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

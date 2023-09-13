@@ -156,9 +156,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
     private void launchDashboardActivity() {
-        Intent intent = new Intent(this, MqttDriverActivity.class);
-        startActivity(intent);
-        finish();
+        onBackPressed();
     }
 
     private void init() {
