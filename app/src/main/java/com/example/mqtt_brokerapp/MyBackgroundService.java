@@ -115,7 +115,7 @@ public class MyBackgroundService extends Service {
                         0,      // run first occurrence immediatetly
                         2000); // run every two seconds
 
-
+//
 //                ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
 //                exec.scheduleAtFixedRate(new Runnable() {
 //                    public void run() {

@@ -29,7 +29,7 @@ public class BrokerListAdapter extends ArrayAdapter<BrokerConfig> {
         this.sharedPreferences = sharedPreferences;
         this.context = context;
     }
-
+//
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

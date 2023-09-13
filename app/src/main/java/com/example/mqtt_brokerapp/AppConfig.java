@@ -11,7 +11,7 @@ public class AppConfig implements Serializable {
 
     AppConfig() {
     }
-
+//
 
     public static synchronized AppConfig getInstance() {
         if (instance == null) {

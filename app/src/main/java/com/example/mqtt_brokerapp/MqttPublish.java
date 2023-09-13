@@ -38,7 +38,7 @@ public class MqttPublish extends MqttDriverActivity{
                     tvStatus.setText("Message Published!" );
                     connectImg.setVisibility(View.VISIBLE);
                 }
-
+//
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     tvStatus.setText("Message Failed!");

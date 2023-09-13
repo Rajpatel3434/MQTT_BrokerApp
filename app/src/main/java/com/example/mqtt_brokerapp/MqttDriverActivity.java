@@ -137,7 +137,7 @@ public class MqttDriverActivity extends AppCompatActivity {
                 }
             }
         });
-
+//
         btnSubscribe = findViewById(R.id.btn_subscribe);
 
         btnSubscribe.setOnClickListener(new View.OnClickListener() {

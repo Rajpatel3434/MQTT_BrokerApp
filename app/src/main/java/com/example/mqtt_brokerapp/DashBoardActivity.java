@@ -134,7 +134,7 @@ public class DashBoardActivity extends AppCompatActivity {
         Intent intent = new Intent(DashBoardActivity.this, MqttDriverActivity.class);
         startActivity(intent);
     }
-
+//
     private void refreshButtons() {
         startBrokerBtn.setEnabled(!MyBackgroundService.isRunning());
         stopBrokerBtn.setEnabled(MyBackgroundService.isRunning());

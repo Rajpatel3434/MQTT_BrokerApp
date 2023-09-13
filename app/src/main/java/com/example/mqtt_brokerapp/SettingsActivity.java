@@ -147,6 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+    //
     private boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);

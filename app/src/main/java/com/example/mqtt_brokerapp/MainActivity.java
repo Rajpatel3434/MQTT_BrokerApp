@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+//
     public void requestPermissionNotification(){
         if(ContextCompat.checkSelfPermission(MainActivity.this,permissions[0]) == PackageManager.PERMISSION_GRANTED){
             permission_post_notifications = true;

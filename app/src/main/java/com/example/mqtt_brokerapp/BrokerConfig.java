@@ -9,7 +9,7 @@ public class BrokerConfig implements Serializable {
 
     public BrokerConfig(){
     }
-
+//
     public void setHostName(String hostName) {
         this.hostName = hostName;
     }
