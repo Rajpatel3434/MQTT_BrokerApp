@@ -74,7 +74,7 @@ public class DashBoardActivity extends AppCompatActivity {
         } else {
             authTextView.setText("No");
         }
-
+////
         connectionTypeTextView = findViewById(R.id.connectionTypeTextView);
         boolean connectionTypeBool = sharedPreferences.getBoolean("sslState", false);
 
