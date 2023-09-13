@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">MQTT Broker by Nukon</string>
-    <string name="dashboard_activity_name">Dashboard</string>
+    <string name="app_name">MQTT App by Nukon</string>
+    <string name="dashboard_activity_name">Broker Dashboard</string>
     <string name="Mqtt_connection_name">Messaging</string>
     <string name="Settings_name">Settings</string>
+    <string name="client_dashboard_name">Client Dashboard</string>
 
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->

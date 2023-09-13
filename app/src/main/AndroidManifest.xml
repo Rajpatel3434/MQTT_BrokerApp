@@ -23,10 +23,11 @@
         tools:targetApi="30">
         <activity
             android:name=".BrokersListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MqttConnectionManager"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/Mqtt_connection_name"
+            android:windowSoftInputMode="adjustPan"
+            />
+
 
         <service
             android:name=".MyBackgroundService"
@@ -41,11 +42,6 @@
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 
         <activity
-            android:name=".DashBoardActivity"
-            android:exported="false"
-            android:label="@string/dashboard_activity_name"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".MqttDriverActivity"
             android:exported="false"
             android:label="@string/Mqtt_connection_name"
@@ -57,9 +53,9 @@
             android:theme="@style/Theme.MQTT_BrokerApp"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MainActivity"
+            android:name=".DashBoardActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/dashboard_activity_name"
             android:theme="@style/Theme.MQTT_BrokerApp"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

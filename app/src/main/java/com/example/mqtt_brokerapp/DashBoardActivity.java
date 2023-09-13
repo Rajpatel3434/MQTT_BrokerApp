@@ -40,7 +40,6 @@ public class DashBoardActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -89,7 +88,6 @@ public class DashBoardActivity extends AppCompatActivity {
         stopBrokerBtn = findViewById(R.id.brokerStopBtn);
 
         subBtn = findViewById(R.id.subBtn);
-        subBtn.setEnabled(false);
 
         stopBrokerBtn.setOnClickListener(v -> stopBrokerService());
 
@@ -109,7 +107,6 @@ public class DashBoardActivity extends AppCompatActivity {
         stopService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
         startBrokerBtn.setEnabled(true);
         stopBrokerBtn.setEnabled(false);
-        subBtn.setEnabled(false);
         tView1.setText("mqtt> Server is not running");
         ipAdd.setText("");
     }
@@ -122,7 +119,6 @@ public class DashBoardActivity extends AppCompatActivity {
         }
         startBrokerBtn.setEnabled(false);
         stopBrokerBtn.setEnabled(true);
-        subBtn.setEnabled(true);
         String display = "mqtt> Server is started... ";
         tView1.setText(display);
         ipAdd.setText("mqtt> IP: " + Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
@@ -131,14 +127,13 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void openSettingsActivity() {
-        Intent intent = new Intent(DashBoardActivity.this, MqttDriverActivity.class);
+        Intent intent = new Intent(DashBoardActivity.this, BrokersListActivity.class);
         startActivity(intent);
     }
-//
+
     private void refreshButtons() {
         startBrokerBtn.setEnabled(!MyBackgroundService.isRunning());
         stopBrokerBtn.setEnabled(MyBackgroundService.isRunning());
-        subBtn.setEnabled(MyBackgroundService.isRunning());
         String display = "mqtt> Server is started... ";
         tView1.setText(display);
         ipAdd.setText("mqtt> IP: " + Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()));
@@ -152,10 +147,7 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        } else if (id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
             openSettingsActivity();
             return true;
         }

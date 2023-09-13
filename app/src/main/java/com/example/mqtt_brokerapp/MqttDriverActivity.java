@@ -137,7 +137,7 @@ public class MqttDriverActivity extends AppCompatActivity {
                 }
             }
         });
-//
+
         btnSubscribe = findViewById(R.id.btn_subscribe);
 
         btnSubscribe.setOnClickListener(new View.OnClickListener() {
@@ -251,8 +251,9 @@ public class MqttDriverActivity extends AppCompatActivity {
         }
     }
     private void launchDashboardActivity() {
-        Intent intent = new Intent(MqttDriverActivity.this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+        onBackPressed();
         finish();
     }
 
@@ -261,7 +262,6 @@ public class MqttDriverActivity extends AppCompatActivity {
     private void connectCommon(String serverURL, String username, String password)   {
         this.username = username;
         this.password = password;
-
         MqttConnectOptions connectOptions = new MqttConnectOptions();
         connectOptions.setAutomaticReconnect(true);
 
@@ -297,6 +297,38 @@ public class MqttDriverActivity extends AppCompatActivity {
             }
         });
 
+        try {
+
+            MqttConnectOptions options = new MqttConnectOptions();
+            options.setUserName(username);
+            options.setPassword(password.toCharArray());
+
+            IMqttToken token = mqttAndroidClient.connect(options);
+
+            token.setActionCallback( new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+
+                    Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
+                    Toast.makeText(MqttDriverActivity.this, "Connected Successfully!", Toast.LENGTH_SHORT).show();
+                    tvStatus.setText("Connection Sucessful!");
+                    switchConnect.setChecked(true);
+                    connectImg.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
+                    tvStatus.setText("Connection Failed!");
+                    Log.e(TAG, "connect onFailure: " );
+                    switchConnect.setChecked(false);
+                    disconnectImg.setVisibility(View.VISIBLE);
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     private void connectWTCP()  {

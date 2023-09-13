@@ -150,7 +150,7 @@ public class MyBackgroundService extends Service {
     // Notifications
     private NotificationCompat.Builder getNotificationBuilder() {
         if (notificationBuilder == null) {
-            Intent notificationIntent = new Intent(this, MainActivity.class);
+            Intent notificationIntent = new Intent(this, DashBoardActivity.class);
             PendingIntent pIntent = null ;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                 pIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
