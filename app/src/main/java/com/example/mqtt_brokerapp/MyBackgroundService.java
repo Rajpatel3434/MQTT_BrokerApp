@@ -46,8 +46,6 @@ public class MyBackgroundService extends Service {
     private static boolean isServiceRunning = false;
     public static boolean isRunning() { return isServiceRunning; }
 
-    //
-
 
     // Attribute for the tasks
     private Timer timer;

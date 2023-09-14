@@ -15,10 +15,13 @@ import org.w3c.dom.Text;
 public class MqttDisconnect extends MqttDriverActivity{
     private MqttAndroidClient mqttAndroidClient;
 
+    //MqttDisconnect constructor taking super() method which allows to use all the instances from MqttDriverActivity.
     public MqttDisconnect(MqttAndroidClient mqttAndroidClient) {
         super();
         this.mqttAndroidClient = mqttAndroidClient;
     }
+
+    //disconnect method takes the following paramers and allows to disconnect the service if mqttandroidclient is not null
     public void disconnectX(Switch switchConnect, TextView tvStatus, ImageView connectImg, ImageView disconnectImg) {
 
         if (mqttAndroidClient != null) {

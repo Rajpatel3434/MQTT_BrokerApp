@@ -16,16 +16,16 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MqttPublish extends MqttDriverActivity{
 
-
     private MqttAndroidClient mqttAndroidClient;
     public MqttPublish(MqttAndroidClient mqttAndroidClient) {
         super();
         this.mqttAndroidClient = mqttAndroidClient;
     }
+
+// publish method allows following parameters to take
     public void publish(int selectedQoS, String topic, boolean isRetained, EditText inputMsg, TextView tvStatus, ImageView connectImg, ImageView disconnectImg) {
         MqttMessage message = new MqttMessage();
         message.setQos(selectedQoS);
-
 
         message.setRetained(isRetained);
         String msg = inputMsg.getText().toString();
@@ -38,7 +38,6 @@ public class MqttPublish extends MqttDriverActivity{
                     tvStatus.setText("Message Published!" );
                     connectImg.setVisibility(View.VISIBLE);
                 }
-//
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     tvStatus.setText("Message Failed!");

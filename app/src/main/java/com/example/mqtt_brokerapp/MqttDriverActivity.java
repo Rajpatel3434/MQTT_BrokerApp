@@ -58,7 +58,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class MqttDriverActivity extends AppCompatActivity {
 
-
+// Object initiation start //
     static final String TAG = "MyTag";
 
     private Button btnPublish, btnSubscribe, btnDone;
@@ -68,6 +68,7 @@ public class MqttDriverActivity extends AppCompatActivity {
     private EditText inputMsg;
     private ImageView connectImg, disconnectImg;
 
+    //Taking instances (setters and getters) from AppConfig class
     private AppConfig appConfig = AppConfig.getInstance();
     private String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
     private String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
@@ -76,11 +77,15 @@ public class MqttDriverActivity extends AppCompatActivity {
     private String clientId = appConfig.getClientName();
     private String username = appConfig.getUserNameTxt();
     private String password = appConfig.getPasswordTxt();
-
     private int selectedQoS = 0;
     private boolean isRetained = false;
+    private Spinner qosSpinner;
 
     private Context context;
+    private static final String PREFS_NAME = "MyPrefs";
+
+    // Object initiation stop //
+
     public MqttDriverActivity(Context context){
         this.context = context;
     }
@@ -89,12 +94,14 @@ public class MqttDriverActivity extends AppCompatActivity {
 
     }
 
+    //oncreate allows init() method, and keeps continuing background service
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mqttconnection);
         init();
 
+        //Toolbar creation and design
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -112,17 +119,15 @@ public class MqttDriverActivity extends AppCompatActivity {
         btnPublish.setEnabled(false);
     }
 
-    private static final String PREFS_NAME = "MyPrefs";
+    // init() method allowing multiple buttons to design and implementing on changing the state
     private void init() {
-
+        // switch connect button implementation where on successful connection allow the service to connect otherwise get the state to the original
 
         switchConnect = findViewById(R.id.btn_connect);
-
         switchConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+        // choose whether to connect over ssl or tcp
                 boolean sslState = appConfig.getSslState();
                 if (isChecked) {
                     tvStatus.setText("Connecting...");
@@ -135,26 +140,30 @@ public class MqttDriverActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MqttDriverActivity.this, "Disconnected...", Toast.LENGTH_SHORT).show();
                     MqttDisconnect mqttDisconnect = new MqttDisconnect(mqttAndroidClient);
-                    mqttDisconnect.disconnectX(switchConnect,tvStatus,connectImg,disconnectImg);
+                    mqttDisconnect.disconnectX(switchConnect,tvStatus,connectImg,disconnectImg); // disconnect if connection is a failure!
                 }
             }
         });
 
-        btnSubscribe = findViewById(R.id.btn_subscribe);
+        //subscribe button which allows to subscribe the client
 
+        btnSubscribe = findViewById(R.id.btn_subscribe);
         btnSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "onClick: subscribe");
                 MqttSubscribe mqttSubscribe = new MqttSubscribe(mqttAndroidClient);
-                mqttSubscribe.subscribe(topic,selectedQoS,tvStatus, connectImg, disconnectImg);
+                mqttSubscribe.subscribe(topic,selectedQoS,tvStatus, connectImg, disconnectImg); // subscribe using subsribe class
             }
         });
+
 
         tvMsg = findViewById(R.id.tv_msg);
         tvStatus = findViewById(R.id.textStatus);
 
         inputMsg = findViewById(R.id.edt_input);
+
+        //publish button where user can publish message to the broker using mqttPublish class
 
         btnPublish = findViewById(R.id.btn_publish);
         btnPublish.setOnClickListener(new View.OnClickListener() {
@@ -167,21 +176,30 @@ public class MqttDriverActivity extends AppCompatActivity {
         tvMsg = findViewById(R.id.tv_msg);
         tvStatus = findViewById(R.id.textStatus);
         btnDone = findViewById(R.id.doneBtnMqtt);
+        switchRetained = findViewById(R.id.retainSwitchId);
+        qosSpinner = findViewById(R.id.qosSpinnerId);
 
 
+        // Shared preferences which allows to store data instances and later can be used by other Activities
         final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String savedtextStatus = sharedPreferences.getString("textStatus","MQTT Message Status");
         String savedtvMsg = sharedPreferences.getString("tvMsg","");
         boolean savedBtnConnectState = sharedPreferences.getBoolean("btnConnect",false);
         boolean savedBtnSubscribeState = sharedPreferences.getBoolean("btnSubscribe", false);
         boolean savedBtnPublishState = sharedPreferences.getBoolean("btnPublish", false);
+        boolean savedBtnRetainState = sharedPreferences.getBoolean("btnRetain",false);
+        boolean savedQoSState = sharedPreferences.getBoolean("textQos",false);
 
-
+        // save the saved objects to the Views objects / casting the object views to the Views
         tvStatus.setText(savedtextStatus);
         tvMsg.setText(savedtvMsg);
         switchConnect.setChecked(savedBtnConnectState);
         btnSubscribe.setActivated(savedBtnSubscribeState);
         btnPublish.setActivated(savedBtnPublishState);
+        switchRetained.setChecked(savedBtnRetainState);
+        qosSpinner.setActivated(savedQoSState);
+
+        //Done button implementation which allows to store the data instaces such as the state of the buttons, terminal messages etc.
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,22 +208,33 @@ public class MqttDriverActivity extends AppCompatActivity {
                 boolean btnConnect = switchConnect.isChecked();
                 boolean btnSubscribed = btnSubscribe.isActivated();
                 boolean btnPublished = btnPublish.isActivated();
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+                boolean btnRetain = switchRetained.isChecked();
+                boolean textQos = qosSpinner.isActivated();
+                SharedPreferences.Editor editor = sharedPreferences.edit(); // editor allows to put objects and store
                 editor.putString("textStatus",textStatus);
-//
                 editor.putBoolean("btnConnect",btnConnect);
                 editor.putBoolean("btnSubscribe",btnSubscribed);
                 editor.putBoolean("btnPublish",btnPublished);
                 editor.putString("tvMsg",textMsg);
+                editor.putBoolean("btnRetain",btnRetain);
+                editor.putBoolean("textQos", textQos);
                 editor.apply();
-                launchDashboardActivity();
+                launchDashboardActivity(); // launchdashboardactivity once Done button is pressed.
                 finish();
 
             }
         });
 
-        Spinner qosSpinner = findViewById(R.id.qosSpinnerId);
+        dropDownQoSSpinner();
+        retainMessages();
+        connectImg = findViewById(R.id.connectedImageView);
+        disconnectImg = findViewById(R.id.disconnectedImageView);
+        connectImg.setVisibility(View.GONE);
+        disconnectImg.setVisibility(View.GONE);
+    }
+
+    //dropDownQoSSpinner allows to choose QoS for the messages to publish
+    private void dropDownQoSSpinner(){
         ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this, R.array.QoS_numbers, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -222,7 +251,10 @@ public class MqttDriverActivity extends AppCompatActivity {
             }
         });
 
-        switchRetained = findViewById(R.id.retainSwitchId);
+    }
+
+    //retain switch implementation whether to retain messages once subscribed to the service
+    private void retainMessages(){
         switchRetained.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -233,13 +265,8 @@ public class MqttDriverActivity extends AppCompatActivity {
                 }
             }
         });
-
-        connectImg = findViewById(R.id.connectedImageView);
-        disconnectImg = findViewById(R.id.disconnectedImageView);
-        connectImg.setVisibility(View.GONE);
-        disconnectImg.setVisibility(View.GONE);
-
     }
+    //get the values either 0,1 or 2 for QoS
     private int extractQoSValue(String qosString) {
         switch (qosString) {
             case "0":
@@ -253,14 +280,13 @@ public class MqttDriverActivity extends AppCompatActivity {
         }
     }
     private void launchDashboardActivity() {
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
         onBackPressed();
         finish();
     }
 
     private String messages = null;
 
+    //connect Common method which takes common url, username and password
     private void connectCommon(String serverURL, String username, String password)   {
         this.username = username;
         this.password = password;
@@ -273,6 +299,7 @@ public class MqttDriverActivity extends AppCompatActivity {
         disconnectImg.setVisibility(View.GONE);
         mqttAndroidClient = new MqttAndroidClient(this.getApplicationContext(), serverURL, clientId);
 
+        //on mqttAndroidClient callback allow to connect wait for message to arrive and set time, topic, QoS and message.
         mqttAndroidClient.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
@@ -300,7 +327,7 @@ public class MqttDriverActivity extends AppCompatActivity {
         });
 
         try {
-
+        // set username and password if user clicks on the Authentication button
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
             options.setPassword(password.toCharArray());
@@ -311,6 +338,7 @@ public class MqttDriverActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
 
+                //on success allow the text to be changed including switch state and subsribe and publish buttons
                     Log.e(TAG, "connect onSuccess: " + asyncActionToken.getClient().getClientId());
                     Toast.makeText(MqttDriverActivity.this, "Connected Successfully!", Toast.LENGTH_SHORT).show();
                     tvStatus.setText("Connection Sucessful!");
@@ -336,10 +364,13 @@ public class MqttDriverActivity extends AppCompatActivity {
         }
     }
 
+    // follow commonConnect method for TCP approach but only changing common serverURL to serverURLTCP
     private void connectWTCP()  {
 
         connectCommon(serverURLTCP,username,password);
     }
+
+    // follow commonConnect method for SSL approach but only changing common serverURL to serverSSL
 
     private void connectWSSL(){
         // SSL block
@@ -394,6 +425,7 @@ public class MqttDriverActivity extends AppCompatActivity {
         connectCommon(serverURLSSL,username,password);
     }
 
+ // onCreateOptionsMenu allows to show back arrow
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -401,6 +433,7 @@ public class MqttDriverActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // implement onCreateOptinsMenu design showcase on onOptionsItemSelected method allowing to open settings and backpressed activity and method.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -32,7 +31,6 @@ public class SettingsActivity extends AppCompatActivity {
     private ImageButton caCrtBtn, clientCrtBtn;
     private TextView caFileTv;
     private TextView clientFileTv;
-
     private static final String PREFS_NAME = "MyPrefs";
 
     @Override
@@ -41,15 +39,19 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
 
-        //Toolbar modification
+        //Toolbar creation and design
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
-         caCrtBtn = findViewById(R.id.caFileBtn);
-         clientCrtBtn = findViewById(R.id.clientFileBtn);
+
+
+
+        // initialising Ids
+        caCrtBtn = findViewById(R.id.caFileBtn);
+        clientCrtBtn = findViewById(R.id.clientFileBtn);
         caFileTv = findViewById(R.id.caFileTextView);
         clientFileTv = findViewById(R.id.clientFileTextView);
         crtCL = findViewById(R.id.certficateConstraintLayout);
@@ -65,8 +67,13 @@ public class SettingsActivity extends AppCompatActivity {
         switchAuthNoAuth = findViewById(R.id.AuthSwitchBtnSetngs);
         saveBtn = findViewById(R.id.SaveBtnStngs);
 
-        init();
 
+        saveInstaces();
+        init();
+    }
+
+    //saving all the instance objects
+    private void saveInstaces(){
         final AppConfig appConfig = AppConfig.getInstance();
         final SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String savedIP = sharedPreferences.getString("ipAddress","");
@@ -92,6 +99,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         caFileTv.setText(savedcaFileTv);
         clientFileTv.setText(savedclientFileTv);
+
+        //save button implementation where onClick all the instances are put into sharedpreferences
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +117,6 @@ public class SettingsActivity extends AppCompatActivity {
                 String clientFileTvField = clientFileTv.getText().toString();
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-
 
                 if (portStr.isEmpty() || ipAddress.isEmpty() || topicNameField.isEmpty() || clientNameField.isEmpty()||(authNoAuthState && (usrnameTxtField.isEmpty() && passwordTxtField.isEmpty()))){
                     Toast.makeText(SettingsActivity.this, "Missing Values!", Toast.LENGTH_SHORT).show();
@@ -147,7 +155,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
-    //
+
+    //check if the input is numeric or string if string convert it into numeric
     private boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
@@ -162,6 +171,7 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
 
+    //init method includes varities of buttons and what happens on onClick
     private void init() {
         authCL = findViewById(R.id.authConstraintlayout);
         authCL.setVisibility(View.GONE);
@@ -215,6 +225,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    //ca certificate file chooser where onclick allows to choose files of any type
     private void showCaCrtFileChooser(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -225,6 +236,8 @@ public class SettingsActivity extends AppCompatActivity {
             Toast.makeText(this, "You need a file manager!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    //client certificate file chooser where onclick allows to choose files of any type
     private void showClientCrtFileChooser(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -236,7 +249,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-
+// onActivity result allows to matches the request code from cacert chooser method or clientcert chooser method. On the match allow to pick a file and save the name to the textview
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 

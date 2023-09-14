@@ -33,6 +33,8 @@ static final String PREFS_NAME = "MyPrefs";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brokers_list);
 
+        //Toolbar design and creation
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -42,6 +44,7 @@ static final String PREFS_NAME = "MyPrefs";
 
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+        // next button allows to move to the next intent which is settings activity
         nextBtn = findViewById(R.id.nextBtnBrokersList);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
