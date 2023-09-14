@@ -383,19 +383,16 @@ public class MqttDriverActivity extends AppCompatActivity {
             MqttClient mqttClient = new MqttClient(serverURLSSL, clientId, persistence);
 
             // Load CA certificate from raw resources
-//            InputStream caInputStream = getResources().openRawResource(R.raw.ca);
             InputStream caInputStream = new FileInputStream(caCertificateUriString);
             CertificateFactory caCertFactory = CertificateFactory.getInstance("X.509");
             X509Certificate caCert = (X509Certificate) caCertFactory.generateCertificate(caInputStream);
 
             // Load client certificate from raw resources
-//            InputStream clientCertInputStream = getResources().openRawResource(R.raw.clientpem);
             InputStream clientCertInputStream = new FileInputStream(clientCertificateUriString);
             CertificateFactory clientCertFactory = CertificateFactory.getInstance("X.509");
             X509Certificate clientCert = (X509Certificate) clientCertFactory.generateCertificate(clientCertInputStream);
 
             // Load client private key
-//            InputStream keyInputStream = getResources().openRawResource(R.raw.clientkey);
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(null, null);
             keyStore.setCertificateEntry("ca", caCert);
