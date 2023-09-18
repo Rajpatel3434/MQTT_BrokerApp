@@ -1,17 +1,11 @@
 package com.example.mqtt_brokerapp;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuCompat;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +21,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuCompat;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -38,7 +34,6 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.io.FileInputStream;
@@ -48,7 +43,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Locale;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -60,16 +54,22 @@ public class MqttDriverActivity extends AppCompatActivity {
 
 // Object initiation start //
     static final String TAG = "MyTag";
+    public MqttSubscribe mqttSubscribe;
 
-    private Button btnPublish, btnSubscribe, btnDone;
-    private Switch switchConnect, switchRetained;
-    private MqttAndroidClient mqttAndroidClient;
-    private TextView tvMsg, tvStatus;
+    Button btnPublish;
+    Button btnSubscribe;
+    private Button btnDone;
+    Switch switchConnect;
+    private Switch switchRetained;
+    MqttAndroidClient mqttAndroidClient;
+    private TextView tvMsg;
+    TextView tvStatus;
     private EditText inputMsg;
-    private ImageView connectImg, disconnectImg;
+    ImageView connectImg;
+    ImageView disconnectImg;
 
     //Taking instances (setters and getters) from AppConfig class
-    private AppConfig appConfig = AppConfig.getInstance();
+    AppConfig appConfig = AppConfig.getInstance();
     private String serverURLTCP = "tcp://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
     private String serverURLSSL = "ssl://" + appConfig.getIpAddress() + ":"+ appConfig.getPort();
 
@@ -365,14 +365,14 @@ public class MqttDriverActivity extends AppCompatActivity {
     }
 
     // follow commonConnect method for TCP approach but only changing common serverURL to serverURLTCP
-    private void connectWTCP()  {
+    void connectWTCP()  {
 
         connectCommon(serverURLTCP,username,password);
     }
 
     // follow commonConnect method for SSL approach but only changing common serverURL to serverSSL
 
-    private void connectWSSL(){
+    void connectWSSL(){
         // SSL block
         try {
 

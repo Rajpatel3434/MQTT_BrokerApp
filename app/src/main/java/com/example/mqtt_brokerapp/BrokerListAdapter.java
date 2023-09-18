@@ -1,7 +1,5 @@
 package com.example.mqtt_brokerapp;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -60,8 +57,5 @@ public class BrokerListAdapter extends ArrayAdapter<BrokerConfig> {
         }
     return convertView;
     }
-
-
-
 
 }

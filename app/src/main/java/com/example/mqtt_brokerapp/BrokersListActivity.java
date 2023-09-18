@@ -1,26 +1,22 @@
 package com.example.mqtt_brokerapp;
 
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
 
-public class BrokersListActivity extends AppCompatActivity {
+public class BrokersListActivity extends AppCompatActivity{
     private Button nextBtn;
     private BrokerListAdapter brokerListAdapter;
     private AppConfig appConfig = AppConfig.getInstance();

@@ -1,9 +1,5 @@
 package com.example.mqtt_brokerapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuCompat;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
@@ -13,15 +9,26 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuCompat;
+
 public class DashBoardActivity extends AppCompatActivity {
-    private Button stopBrokerBtn, startBrokerBtn, subBtn;
-    private TextView tView1, ipAdd, ipAddTv, portTextView, authTextView, connectionTypeTextView;
-    private WifiManager wifiManager;
+    public SharedPreferences sharedPreferences;
+    Button stopBrokerBtn;
+    Button startBrokerBtn;
+    private Button subBtn;
+    TextView tView1;
+    TextView ipAdd;
+    private TextView ipAddTv;
+    TextView portTextView;
+    TextView authTextView;
+    TextView connectionTypeTextView;
+    WifiManager wifiManager;
     static final String PREFS_NAME = "MyPrefs";
 
     @Override
@@ -112,7 +119,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     //stopbroker button service which allows to stop background services
-    private void stopBrokerService() {
+    void stopBrokerService() {
         stopService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
         startBrokerBtn.setEnabled(true);
         stopBrokerBtn.setEnabled(false);
@@ -121,7 +128,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     //startbroker button service which allows to start background services
-    private void startBrokerService() {
+    void startBrokerService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(new Intent(DashBoardActivity.this, MyBackgroundService.class));
         } else {
@@ -137,13 +144,13 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     //settings activity opens up once settings buttons is pressed
-    private void openSettingsActivity() {
+    void openSettingsActivity() {
         Intent intent = new Intent(DashBoardActivity.this, BrokersListActivity.class);
         startActivity(intent);
     }
 
     //refresh buttons which allows to run start and stop buttons between activies switched
-    private void refreshButtons() {
+    void refreshButtons() {
         startBrokerBtn.setEnabled(!MyBackgroundService.isRunning());
         stopBrokerBtn.setEnabled(MyBackgroundService.isRunning());
         String display = "mqtt> Server is started... ";
