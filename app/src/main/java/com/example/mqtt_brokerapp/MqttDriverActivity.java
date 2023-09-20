@@ -318,10 +318,10 @@ public class MqttDriverActivity extends AppCompatActivity {
 
                 String msg = "time: " + time + "\r\n" + "topic: " + "\r\n" + "QoS: " + selectedQoS + "\r\n" + "message: " + message.toString();
                 messages = messages == null ? msg : messages + "\n" + msg;
-
                 tvMsg.setText(messages);
-                MqttMessageConfig mqttMessage = new MqttMessageConfig(topic,message.toString(),System.currentTimeMillis(),selectedQoS);
+                MqttMessageConfig mqttMessage = new MqttMessageConfig(topic,msg.toString(),System.currentTimeMillis(),selectedQoS);
                 saveMqttMessageToDatabase(mqttMessage);
+
             }
 
             @Override
@@ -374,9 +374,24 @@ public class MqttDriverActivity extends AppCompatActivity {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
             db.mqttMessageDao().insert(mqttMessage);
+//            db.mqttMessageDao().de
         }).start();
     }
 
+    private void deleteMqttMessageToDatabase(MqttMessageConfig mqttMessage){
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+            db.mqttMessageDao().delete(mqttMessage);
+//            db.mqttMessageDao().de
+        }).start();
+    }
+
+    private void updateMqttMessageToDatabase(MqttMessageConfig mqttMessage){
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+            db.mqttMessageDao().updateState((int) mqttMessage.getId(),Integer.toString(mqttMessage.getState()));
+        }).start();
+    }
     private void checkMessagesInDatabase() {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
@@ -387,7 +402,6 @@ public class MqttDriverActivity extends AppCompatActivity {
             }
         }).start();
     }
-
 
     // follow commonConnect method for TCP approach but only changing common serverURL to serverURLTCP
     void connectWTCP()  {
