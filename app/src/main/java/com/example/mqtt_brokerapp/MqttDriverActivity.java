@@ -317,6 +317,8 @@ public class MqttDriverActivity extends AppCompatActivity {
                 messages = messages == null ? msg : messages + "\n" + msg;
 
                 tvMsg.setText(messages);
+                MqttMessageConfig mqttMessage = new MqttMessageConfig(topic,message.toString(),System.currentTimeMillis(),selectedQoS);
+                saveMqttMessageToDatabase(mqttMessage);
             }
 
             @Override
@@ -363,6 +365,15 @@ public class MqttDriverActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void saveMqttMessageToDatabase(MqttMessageConfig mqttMessage) {
+        // Create a new thread or use coroutines to perform database operations asynchronously
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+            db.mqttMessageDao().insert(mqttMessage);
+        }).start();
+    }
+
 
     // follow commonConnect method for TCP approach but only changing common serverURL to serverURLTCP
     void connectWTCP()  {
