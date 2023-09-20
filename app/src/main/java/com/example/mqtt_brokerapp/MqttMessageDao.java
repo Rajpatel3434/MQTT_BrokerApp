@@ -17,7 +17,7 @@ public interface MqttMessageDao {
 //    List<MqttMessage> getAllMessages();
 
         @Query("SELECT * FROM mqttmessageconfig")
-        List<MqttMessageConfig> getAll();
+        List<MqttMessageConfig> getAllMessages();
 //
 //        @Query("SELECT * FROM MqttMessage WHERE topic = :topic")
 //        List<MqttMessage> getByTopic(String topic);

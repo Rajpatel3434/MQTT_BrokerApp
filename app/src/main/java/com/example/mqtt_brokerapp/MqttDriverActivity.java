@@ -43,6 +43,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -54,6 +55,7 @@ public class MqttDriverActivity extends AppCompatActivity {
 
 // Object initiation start //
     static final String TAG = "MyTag";
+    static  final  String TAGDATABASE ="DatabaseTag";
     public MqttSubscribe mqttSubscribe;
 
     Button btnPublish;
@@ -117,6 +119,7 @@ public class MqttDriverActivity extends AppCompatActivity {
 
         btnSubscribe.setEnabled(false);
         btnPublish.setEnabled(false);
+        checkMessagesInDatabase();
     }
 
     // init() method allowing multiple buttons to design and implementing on changing the state
@@ -371,6 +374,17 @@ public class MqttDriverActivity extends AppCompatActivity {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
             db.mqttMessageDao().insert(mqttMessage);
+        }).start();
+    }
+
+    private void checkMessagesInDatabase() {
+        new Thread(() -> {
+            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+            List<MqttMessageConfig> messages = db.mqttMessageDao().getAllMessages();
+
+            for (MqttMessageConfig message : messages) {
+                Log.d(TAGDATABASE, "Message: " + message.getPayload());
+            }
         }).start();
     }
 
