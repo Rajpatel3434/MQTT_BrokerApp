@@ -16,7 +16,7 @@
         android:paddingTop="0dp"
 
         android:paddingBottom="0dp"
-        android:text="Delete"
+        android:text="Clear"
         android:textAlignment="center"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -235,8 +235,12 @@
         android:id="@+id/deleteBtnView"
         android:layout_width="32dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/ic_delete"
-        tools:layout_editor_absoluteX="318dp"
-        tools:layout_editor_absoluteY="842dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/clearBtn"
+        app:layout_constraintEnd_toEndOf="@+id/clearBtn"
+        app:layout_constraintHorizontal_bias="0.917"
+        app:layout_constraintStart_toStartOf="@+id/clearBtn"
+        app:layout_constraintTop_toTopOf="@+id/clearBtn"
+        app:layout_constraintVertical_bias="0.571"
+        app:srcCompat="@drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
