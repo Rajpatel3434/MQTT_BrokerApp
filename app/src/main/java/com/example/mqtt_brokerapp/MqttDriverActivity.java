@@ -331,7 +331,6 @@ public class MqttDriverActivity extends AppCompatActivity {
                 tvMsg.setText(messages);
                 MqttMessageConfig mqttMessage = new MqttMessageConfig(topic,msg.toString(),System.currentTimeMillis(),selectedQoS);
                 saveMqttMessageToDatabase(mqttMessage);
-
             }
 
             @Override
