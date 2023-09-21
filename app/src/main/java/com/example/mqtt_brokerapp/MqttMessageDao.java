@@ -28,6 +28,9 @@ public interface MqttMessageDao {
         @Delete
         void delete(MqttMessageConfig message);
 
+        @Query("DELETE FROM mqttmessageconfig")
+        void deleteAll();
+
     }
 
 

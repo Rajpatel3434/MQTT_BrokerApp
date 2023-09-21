@@ -60,6 +60,7 @@ public class MqttDriverActivity extends AppCompatActivity {
 
     Button btnPublish;
     Button btnSubscribe;
+    Button deleteBtn;
     private Button btnDone;
     Switch switchConnect;
     private Switch switchRetained;
@@ -176,6 +177,16 @@ public class MqttDriverActivity extends AppCompatActivity {
                 mqttPublish.publish(selectedQoS,topic,isRetained,inputMsg,tvStatus,connectImg,disconnectImg);
             }
         });
+
+        deleteBtn = findViewById(R.id.clearBtn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteMqttMessageToDatabase();
+                clearMessagesFromScreen();
+            }
+        });
+
         tvMsg = findViewById(R.id.tv_msg);
         tvStatus = findViewById(R.id.textStatus);
         btnDone = findViewById(R.id.doneBtnMqtt);
@@ -286,7 +297,6 @@ public class MqttDriverActivity extends AppCompatActivity {
         onBackPressed();
         finish();
     }
-
     private String messages = null;
 
     //connect Common method which takes common url, username and password
@@ -378,20 +388,28 @@ public class MqttDriverActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void deleteMqttMessageToDatabase(MqttMessageConfig mqttMessage){
+    private void deleteMqttMessageToDatabase(){
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-            db.mqttMessageDao().delete(mqttMessage);
+            db.mqttMessageDao().deleteAll();
 //            db.mqttMessageDao().de
         }).start();
     }
-
-    private void updateMqttMessageToDatabase(MqttMessageConfig mqttMessage){
-        new Thread(() -> {
-            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-            db.mqttMessageDao().updateState((int) mqttMessage.getId(),Integer.toString(mqttMessage.getState()));
-        }).start();
+    private void clearMessagesFromScreen() {
+        runOnUiThread(() -> {
+            tvMsg.setText(""); // Assuming tvMsg is the TextView displaying messages
+        });
     }
+
+
+
+    //
+//    private void updateMqttMessageToDatabase(MqttMessageConfig mqttMessage){
+//        new Thread(() -> {
+//            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+//            db.mqttMessageDao().updateState((int) mqttMessage.getId(),Integer.toString(mqttMessage.getState()));
+//        }).start();
+//    }
     private void checkMessagesInDatabase() {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());

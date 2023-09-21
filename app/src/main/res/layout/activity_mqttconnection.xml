@@ -7,21 +7,41 @@
     android:background="@drawable/border">
 
     <Button
-        android:id="@+id/doneBtnMqtt"
-        android:layout_width="125dp"
+        android:id="@+id/clearBtn"
+        android:layout_width="129dp"
 
-        android:layout_height="52dp"
+        android:layout_height="58dp"
         android:background="@drawable/button_nukon"
         android:paddingLeft="8dp"
         android:paddingTop="0dp"
 
         android:paddingBottom="0dp"
-        android:text="Done "
+        android:text="Delete"
         android:textAlignment="center"
         android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintHorizontal_bias="0.797"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/doneBtnMqtt"
+        android:layout_width="143dp"
+
+        android:layout_height="60dp"
+        android:background="@drawable/button_nukon"
+        android:paddingLeft="8dp"
+        android:paddingTop="0dp"
+
+        android:paddingBottom="0dp"
+        android:text="Save and Return"
+        android:textAlignment="center"
+        android:textSize="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.244"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
@@ -210,5 +230,13 @@
         app:layout_constraintStart_toStartOf="@+id/doneBtnMqtt"
         app:layout_constraintTop_toTopOf="@+id/doneBtnMqtt"
         app:srcCompat="@drawable/icon_done" />
+
+    <ImageView
+        android:id="@+id/deleteBtnView"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/ic_delete"
+        tools:layout_editor_absoluteX="318dp"
+        tools:layout_editor_absoluteY="842dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
