@@ -379,37 +379,30 @@ public class MqttDriverActivity extends AppCompatActivity {
         }
     }
 
+    //save messages to the database
     private void saveMqttMessageToDatabase(MqttMessageConfig mqttMessage) {
         // Create a new thread or use coroutines to perform database operations asynchronously
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
             db.mqttMessageDao().insert(mqttMessage);
-//            db.mqttMessageDao().de
         }).start();
     }
 
+    //delete messages completely from the database
     private void deleteMqttMessageToDatabase(){
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
             db.mqttMessageDao().deleteAll();
-//            db.mqttMessageDao().de
         }).start();
     }
+    //showcase clear textview field
     private void clearMessagesFromScreen() {
         runOnUiThread(() -> {
-            tvMsg.setText(""); // Assuming tvMsg is the TextView displaying messages
+            tvMsg.setText("");
         });
     }
 
-
-
-    //
-//    private void updateMqttMessageToDatabase(MqttMessageConfig mqttMessage){
-//        new Thread(() -> {
-//            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-//            db.mqttMessageDao().updateState((int) mqttMessage.getId(),Integer.toString(mqttMessage.getState()));
-//        }).start();
-//    }
+    //Checking / Testing if the methods are working
     private void checkMessagesInDatabase() {
         new Thread(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
