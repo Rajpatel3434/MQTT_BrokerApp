@@ -203,7 +203,7 @@ public class MqttDriverActivity extends AppCompatActivity {
         boolean savedBtnPublishState = sharedPreferences.getBoolean("btnPublish", false);
         boolean savedBtnRetainState = sharedPreferences.getBoolean("btnRetain",false);
         boolean savedQoSState = sharedPreferences.getBoolean("textQos",false);
-//
+
         // save the saved objects to the Views objects / casting the object views to the Views
         tvStatus.setText(savedtextStatus);
         tvMsg.setText(savedtvMsg);
