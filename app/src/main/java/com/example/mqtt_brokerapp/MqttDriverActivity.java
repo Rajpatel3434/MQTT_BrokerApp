@@ -464,7 +464,7 @@ public class MqttDriverActivity extends AppCompatActivity {
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
+//
         catch (Exception e) {
             e.printStackTrace();
         }
